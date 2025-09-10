@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/*font*/
+
+@font-face {
+  font-family: "LaundryGothicBold";
+  src: url("/font/LaundryGothicBold.woff") format("woff");
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "LaundryGothicRegular";
+  src: url("/font/LaundryGothicRegular.woff") format("woff");
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,8 +33,22 @@
   }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
+  width: 100%;
+  height: 100%;
+  min-height: 720px;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "LaundryGothicRegular";
+  background-color: #fffefa;
+}
+
+a,
+button {
+  display: inline-block;
+  cursor: pointer;
 }
