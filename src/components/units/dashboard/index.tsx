@@ -1,7 +1,12 @@
 import { Slide } from "@/components/ui/slide";
+import { useBookApi } from "@/hooks/useBookApi";
 import Link from "next/link";
 
 export default function Dashboard() {
+    const { books } = useBookApi();
+
+    console.log("books", books)
+
     const Menu = [
         { src: "search", menu: "책 검색하기" },
         { src: "write", menu: "독후감 쓰기" },
@@ -21,7 +26,7 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between mt-5 text-2xl ">
                     {
                         Menu.map((el) => (
-                            <Link key={el.src} href={el.src} className="rounded-md p-5 bg-[#eee] hover:bg-[#ffd1ba]">{el.menu}</Link>
+                            <Link key={el.src} href={el.src} className="w-[24%] rounded-md p-2 bg-[#eee] hover:bg-[#ffd1ba]">{el.menu}</Link>
                         ))
                     }
                 </div>
