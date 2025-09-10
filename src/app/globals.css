@@ -58,3 +58,18 @@ button {
   display: inline-block;
   cursor: pointer;
 }
+
+/*  */
+@keyframes scroll {
+  0% {
+    transform: translateX(0%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.hover\:animate-scroll:hover {
+  animation: scroll 5s linear infinite;
+}
