@@ -59,17 +59,11 @@ button {
   cursor: pointer;
 }
 
-/*  */
-@keyframes scroll {
-  0% {
-    transform: translateX(0%);
-  }
-
-  100% {
-    transform: translateX(-100%);
-  }
+.break-keep-all {
+  word-break: keep-all;
 }
 
-.hover\:animate-scroll:hover {
-  animation: scroll 5s linear infinite;
+input,
+textarea {
+  outline: none;
 }
