@@ -1,3 +1,4 @@
+import MenuLink from "@/components/ui/menuLink";
 import { Slide } from "@/components/ui/slide";
 
 import Link from "next/link";
@@ -20,11 +21,11 @@ export default function Dashboard() {
                 </div>
             </section>
 
-            <section className="mt-10">
-                <div className="flex items-center justify-between mt-5 text-2xl ">
+            <section className="mt-5 w-full">
+                <div className="flex items-center justify-between mt-5 text-2xl w-full">
                     {
                         Menu.map((el) => (
-                            <Link key={el.src} href={el.src} className="w-[24%] rounded-md p-2 bg-[#eee] hover:bg-[#ffd1ba] text-center">{el.menu}</Link>
+                            <MenuLink el={el} key={el.src} />
                         ))
                     }
                 </div>

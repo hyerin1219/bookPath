@@ -29,7 +29,7 @@ export function Slide() {
                         ))
                         :
                         bookData.map(el => (
-                            <BookItem el={el} />
+                            <BookItem key={el.isbn} el={el} />
                         ))
                 }
 
