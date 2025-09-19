@@ -1,15 +1,17 @@
-import MenuLink from '@/components/ui/menuLink';
+import MenuLink from "@/components/ui/menuLink";
+import { Slide } from "@/components/ui/slide";
 
-import { Slide } from '@/components/ui/slide';
+import Link from "next/link";
 
 export default function Dashboard() {
-    const Menu = [
-        { src: 'search', menu: '책 검색하기' },
-        { src: 'write', menu: '독후감 쓰기' },
-        { src: 'myBookPath', menu: '나의 책갈피' },
-        { src: 'bookClub', menu: '책갈피 모임' },
-    ];
 
+
+    const Menu = [
+        { src: "search", menu: "책 검색하기" },
+        { src: "write", menu: "독후감 쓰기" },
+        { src: "myBookPath", menu: "나의 책갈피" },
+        { src: "bookClub", menu: "책갈피 모임" },
+    ]
     return (
         <div>
             <section>
@@ -21,11 +23,13 @@ export default function Dashboard() {
 
             <section className="mt-5 w-full">
                 <div className="flex items-center justify-between mt-5 text-2xl w-full">
-                    {Menu.map((el) => (
-                        <MenuLink el={el} key={el.src} />
-                    ))}
+                    {
+                        Menu.map((el) => (
+                            <MenuLink el={el} key={el.src} />
+                        ))
+                    }
                 </div>
             </section>
         </div>
-    );
+    )
 }
