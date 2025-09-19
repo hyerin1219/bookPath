@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { IBookItems } from '@/types/bookItems';
@@ -5,43 +6,32 @@ import { IBookItems } from '@/types/bookItems';
 export function useBookData(initialKeyword = '도서') {
     const [keyword, setKeyword] = useState(initialKeyword);
     const [bookData, setBookData] = useState<IBookItems[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [totalData, setTotalData] = useState(0);
 
-    // 검색어, 페이지 캐시
     const cache = useRef<{ [key: string]: { [page: number]: IBookItems[] } }>({});
 
-    const fetchBooks = async (searchKeyword?: string, pageNumber?: number) => {
-        const query = searchKeyword || keyword;
-        const currentPage = pageNumber || page;
+    const fetchBooks = async (searchKeyword: string, pageNumber: number) => {
+        if (!searchKeyword) return;
 
-        // 검색어 없으면 리턴
-        if (!query) {
-            setBookData([]);
-            setLoading(false);
-            return;
-        }
+        const startIndex = (pageNumber - 1) * 10 + 1;
 
-        // 캐시 확인
-        if (cache.current[query]?.[currentPage]) {
-            setBookData(cache.current[query][currentPage]);
-            setLoading(false);
+        if (cache.current[searchKeyword]?.[startIndex]) {
+            setBookData(cache.current[searchKeyword][startIndex]);
             return;
         }
 
         setLoading(true);
         try {
             const res = await axios.get('/api/books', {
-                params: { query, sort: 'date', page: currentPage },
+                params: { query: searchKeyword, sort: 'date', start: startIndex },
             });
 
-            // 한글 제목만
-            const filtered = res.data.items.filter((book: IBookItems) => /[가-힣]/.test(book.title)).slice(0, 10);
+            const filtered = res.data.items.filter((book: IBookItems) => /[가-힣]/.test(book.title));
 
-            // 캐시에 저장
-            if (!cache.current[query]) cache.current[query] = {};
-            cache.current[query][currentPage] = filtered;
+            if (!cache.current[searchKeyword]) cache.current[searchKeyword] = {};
+            cache.current[searchKeyword][startIndex] = filtered;
 
             setBookData(filtered);
             setTotalData(res.data.total);
@@ -53,16 +43,16 @@ export function useBookData(initialKeyword = '도서') {
         }
     };
 
-    // 키워드 변경 시 자동 fetch
+    // 키워드 변경 시 page 초기화 및 fetch
     useEffect(() => {
         setPage(1);
-        fetchBooks();
+        fetchBooks(keyword, 1);
     }, [keyword]);
 
-    // 페이지 변경 시 fetch
+    // page 변경 시 fetch
     useEffect(() => {
         fetchBooks(keyword, page);
-    }, [page]);
+    }, [page, keyword]);
 
-    return { bookData, loading, keyword, setKeyword, page, setPage, fetchBooks, totalData };
+    return { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks };
 }
