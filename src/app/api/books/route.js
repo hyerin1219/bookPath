@@ -3,10 +3,17 @@ import axios from 'axios';
 export async function GET(req) {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('query') || '';
+    const sort = searchParams.get('sort') || 'date';
+    const start = searchParams.get('start') || '1';
 
     try {
         const response = await axios.get('https://openapi.naver.com/v1/search/book.json', {
-            params: { query },
+            params: {
+                query,
+                sort,
+                start,
+                display: 10,
+            },
             headers: {
                 'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID,
                 'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET,

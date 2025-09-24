@@ -8,6 +8,8 @@ const buttonVariants = cva('inline-flex items-center justify-center whitespace-n
         variant: {
             default: 'bg-[#faf8da] ',
             search: 'bg-[#a8e6cf]',
+            submit: 'bg-[#bee3f8]',
+            close: 'bg-[#D9D9D9]',
         },
         size: {
             default: 'h-9 px-4 py-2 has-[>svg]:px-3',
