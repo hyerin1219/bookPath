@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { IBookItems } from '@/types/bookItems';
 
-export function useBookData(initialKeyword = '도서') {
+export function useBookData(initialKeyword = '한국소설') {
     const [keyword, setKeyword] = useState(initialKeyword);
     const [bookData, setBookData] = useState<IBookItems[]>([]);
     const [loading, setLoading] = useState(false);

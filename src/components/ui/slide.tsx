@@ -11,7 +11,7 @@ import Modal from './modal';
 import { IBookItems } from '@/types/bookItems';
 
 export function Slide() {
-    const { bookData, loading } = useBookData('도서'); // 초기 키워드 "도서"
+    const { bookData, loading } = useBookData('한국소설'); // 초기 키워드 "한국소설"
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
 
     const [emblaRef] = useEmblaCarousel(

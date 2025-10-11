@@ -55,7 +55,7 @@ export default function Search() {
             <div className="flex flex-wrap justify-center m-5 my-10 gap-8">
                 {loading
                     ? Array.from({ length: 10 }).map((_, idx) => (
-                          <div key={idx} className="flex-shrink-0 flex flex-col items-center text-center w-[150px]">
+                          <div key={idx} className="flex-shrink-0 inline-flex flex-col items-center text-center w-[150px]">
                               <div className="w-full h-[213px] rounded-md bg-[#eee] animate-pulse"></div>
                               <div className="w-full h-5 mt-2 bg-[#ddd] rounded"></div>
                           </div>
