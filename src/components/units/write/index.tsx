@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { addDoc, collection, doc, getFirestore, setDoc } from 'firebase/firestore/lite';
+import { doc, getFirestore, setDoc } from 'firebase/firestore/lite';
 
 import { IBookItems } from '@/types/bookItems';
 import { BookItem02 } from '@/components/ui/bookItem02';

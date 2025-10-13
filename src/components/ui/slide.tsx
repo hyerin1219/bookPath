@@ -23,8 +23,6 @@ export function Slide() {
         [Autoplay({ delay: 3000, stopOnInteraction: false })]
     );
 
-    console.log(bookData);
-
     return (
         <div>
             <div className="w-full overflow-hidden" ref={emblaRef}>

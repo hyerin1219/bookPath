@@ -1,69 +1,70 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*font*/
 
 @font-face {
-  font-family: "LaundryGothicBold";
-  src: url("/font/LaundryGothicBold.woff") format("woff");
-  font-style: normal;
+    font-family: 'LaundryGothicBold';
+    src: url('/font/LaundryGothicBold.woff') format('woff');
+    font-style: normal;
 }
 
 @font-face {
-  font-family: "LaundryGothicRegular";
-  src: url("/font/LaundryGothicRegular.woff") format("woff");
-  font-style: normal;
+    font-family: 'LaundryGothicRegular';
+    src: url('/font/LaundryGothicRegular.woff') format('woff');
+    font-style: normal;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --background: #ffffff;
+    --foreground: #171717;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: var(--font-geist-sans);
+    --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+    :root {
+        --background: #0a0a0a;
+        --foreground: #ededed;
+    }
 }
 
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 
 body {
-  width: 100%;
-  height: 100%;
-  min-height: 720px;
-  background: var(--background);
-  color: var(--foreground);
-  font-family: "LaundryGothicRegular";
-  background-color: #fffefa;
+    width: 100%;
+    height: 100%;
+    min-height: 720px;
+    background: var(--background);
+    color: var(--foreground);
+    font-family: 'LaundryGothicRegular';
+    background-color: #fffefa;
 }
 
 main {
-  max-width: 1200px;
-  margin: 10px auto;
-  padding: 0 3%;
+    max-width: 1200px;
+    margin: 10px auto;
+    padding: 0 3%;
 }
 
 a,
 button {
-  display: inline-block;
-  cursor: pointer;
+    display: inline-block;
+    cursor: pointer;
+    outline: none;
 }
 
 .break-keep-all {
-  word-break: keep-all;
+    word-break: keep-all;
 }
 
 input,
 textarea {
-  outline: none;
+    outline: none;
 }

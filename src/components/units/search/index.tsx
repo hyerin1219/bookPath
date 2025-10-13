@@ -61,7 +61,7 @@ export default function Search() {
                           </div>
                       ))
                     : bookData.length > 0
-                    ? bookData.map((el) => <BookItem key={`${el.title}-${el.author}`} el={el} onClick={() => setSelectedBook(el)} />)
+                    ? bookData.map((el) => <BookItem key={`${el.title}-${el.isbn}`} el={el} onClick={() => setSelectedBook(el)} />)
                     : keyword && <p className="w-full text-center text-[#888] mt-4">검색 결과가 없습니다.</p>}
             </div>
 

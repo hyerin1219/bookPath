@@ -15,7 +15,6 @@ interface IModalProps {
 }
 
 export default function Modal({ selectedBook, setSelectedBook }: IModalProps) {
-    console.log(selectedBook);
     const router = useRouter();
 
     const handleWrite = () => {
