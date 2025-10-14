@@ -1,8 +1,6 @@
 import MenuLink from '@/components/ui/menuLink';
 import { Slide } from '@/components/ui/slide';
 
-import Link from 'next/link';
-
 export default function Dashboard() {
     const Menu = [
         { src: 'search', menu: '책 검색하기' },

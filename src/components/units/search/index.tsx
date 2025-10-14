@@ -45,7 +45,7 @@ export default function Search() {
         <div>
             {/* 검색 입력창 */}
             <div className="flex items-center justify-between mb-4">
-                <input value={input} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={(e) => setInput(e.target.value)} type="text" className="w-[90%] p-2 bg-[#eee] rounded-xl shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)]" placeholder="검색어를 입력해보세요." />
+                <input value={input} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={(e) => setInput(e.target.value)} type="text" className="w-[85%] p-2 bg-[#eee] rounded-xl shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)]" placeholder="검색어를 입력해보세요." />
                 <Button variant="search" onClick={handleSearch}>
                     검색
                 </Button>

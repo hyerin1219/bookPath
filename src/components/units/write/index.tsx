@@ -1,18 +1,24 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import { doc, getFirestore, setDoc } from 'firebase/firestore/lite';
 
 import { IBookItems } from '@/types/bookItems';
+
 import { BookItem02 } from '@/components/ui/bookItem02';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
-import { useRouter } from 'next/navigation';
-import { firestore } from 'firebase-admin';
+import Alert from '@/components/ui/alert';
+
+import { useLoginCheck } from '@/hooks/useLoginCheck';
 
 export default function Write() {
     const [book, setBook] = useState<IBookItems | null>(null);
     const [content, setContent] = useState('');
+
+    const { showAlert } = useLoginCheck();
 
     const router = useRouter();
 
@@ -26,6 +32,9 @@ export default function Write() {
     // firebase 등록하기 기능
     const handleSubmit = async (book: IBookItems): Promise<void> => {
         if (!book) return;
+        // if (!userData) {
+        //     return;
+        // }
 
         try {
             const firestore = getFirestore(firebaseApp);
@@ -79,6 +88,8 @@ export default function Write() {
             <Button onClick={() => handleSubmit(book!)} variant="submit">
                 등록
             </Button>
+
+            {showAlert && <Alert message="로그인 후 이용해주세요!" />}
         </div>
     );
 }

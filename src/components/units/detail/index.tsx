@@ -2,7 +2,7 @@
 import { getFirestore, doc, getDoc } from 'firebase/firestore/lite';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { IBookPath } from '@/types/bookPath';
-import { BookItem02 } from '@/components/ui/bookItem02';
+
 import { Button } from '@/components/ui/button';
 
 interface DetailPageProps {

@@ -1,5 +1,10 @@
-import Search from "@/components/units/search";
+'use client';
+
+import Search from '@/components/units/search';
+// import { useLoginCheck } from '@/hooks/useLoginCheck';
 
 export default function SearchPage() {
-    return <Search />
+    // useLoginCheck();
+
+    return <Search />;
 }
