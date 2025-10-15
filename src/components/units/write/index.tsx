@@ -11,14 +11,13 @@ import { BookItem02 } from '@/components/ui/bookItem02';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import Alert from '@/components/ui/alert';
-
-import { useLoginCheck } from '@/hooks/useLoginCheck';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Write() {
     const [book, setBook] = useState<IBookItems | null>(null);
     const [content, setContent] = useState('');
 
-    const { showAlert } = useLoginCheck();
+    const { user, uid } = useAuth();
 
     const router = useRouter();
 
@@ -40,6 +39,7 @@ export default function Write() {
             const firestore = getFirestore(firebaseApp);
             // const bookPath = collection(getFirestore(firebaseApp), 'bookPath');
             await setDoc(doc(firestore, 'bookPath', book.isbn), {
+                uid,
                 id: book.isbn,
                 writer: book.author,
                 img: book.image,
@@ -47,8 +47,8 @@ export default function Write() {
                 content,
             });
 
-            setContent('');
             router.push(`/detail/${book.isbn}`);
+            setContent('');
         } catch (error) {
             if (error instanceof Error) alert(error.message);
         }
@@ -89,7 +89,7 @@ export default function Write() {
                 등록
             </Button>
 
-            {showAlert && <Alert message="로그인 후 이용해주세요!" />}
+            {!uid && <Alert message="로그인 후 이용해주세요!" />}
         </div>
     );
 }
