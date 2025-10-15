@@ -3,7 +3,7 @@ import { Slide } from '@/components/ui/slide';
 
 export default function Dashboard() {
     const Menu = [
-        { src: 'search', menu: '책 검색하기' },
+        { src: 'search', menu: '책 찾아보기' },
         { src: 'search', menu: '독후감 쓰기' },
         { src: 'myBookPath', menu: '나의 책갈피' },
         { src: 'bookClub', menu: '책갈피 모임' },

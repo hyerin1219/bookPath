@@ -1,23 +1,16 @@
 'use client';
 
 import LoginModal from '@/components/ui/loginModal';
-import { useUser } from '@/hooks/UserContext';
+import { useAuth } from '@/hooks/useAuth';
+
 import Link from 'next/link';
 import { useState } from 'react';
 
-declare const window: typeof globalThis & {
-    Kakao: any;
-};
-
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
-    const { userData, setUserData } = useUser();
+    const { user, handleLogout } = useAuth();
 
     const handleOpenLoginModal = () => setIsOpen(true);
-    const handleLogout = () => {
-        window.Kakao.Auth.logout(() => console.log('로그아웃 완료'));
-        setUserData(null);
-    };
 
     return (
         <>
@@ -28,9 +21,9 @@ export default function Header() {
                     </Link>
                 </h1>
 
-                {userData ? (
+                {user ? (
                     <div className="flex items-center gap-2">
-                        <span>{userData?.properties?.nickname}님</span>
+                        <span>{user.displayName}님</span>
                         <button onClick={handleLogout} className="ml-2 text-sm ">
                             로그아웃
                         </button>

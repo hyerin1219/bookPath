@@ -1,18 +1,57 @@
 'use client';
 import Alert from '@/components/ui/alert';
+import { useAuth } from '@/hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { IBookItems } from '@/types/bookItems';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
+import { firebaseApp } from '@/components/commons/libraries/firebase';
 
-import { useLoginCheck } from '@/hooks/useLoginCheck';
-import { useUser } from '@/hooks/UserContext';
+import { BookItem02 } from '@/components/ui/bookItem02';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function MyBookPathPage() {
-    const { showAlert } = useLoginCheck();
-    const { userData } = useUser();
+    const { user, uid } = useAuth();
+    const [myBooks, setMyBooks] = useState<IBookItems[]>([]);
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchMyBooks = async () => {
+            if (!uid) return;
+
+            const firestore = getFirestore(firebaseApp);
+            const q = query(collection(firestore, 'bookPath'), where('uid', '==', uid));
+            const snapshot = await getDocs(q);
+
+            const books = snapshot.docs.map((doc) => ({
+                id: doc.id,
+                ...doc.data(),
+            })) as any;
+
+            setMyBooks(books);
+            console.log('books', books);
+        };
+
+        fetchMyBooks();
+    }, [uid]);
 
     return (
         <div>
-            <div className="text-2xl">{userData?.properties?.nickname}님의 책갈피</div>
+            <div className="text-2xl">{user?.displayName}님의 책갈피</div>
 
-            {/* {showAlert && <Alert message="로그인 후 이용해주세요!" />} */}
+            {myBooks.length === 0 ? (
+                <p className="text-gray-500 mt-10 text-center">등록된 책갈피가 없습니다.</p>
+            ) : (
+                <div className="mt-4 space-y-2">
+                    {myBooks.map((el) => (
+                        <div className="cursor-pointer" key={el.img} onClick={() => router.push(`/detail/${el.isbn}`)}>
+                            <BookItem02 el={el} className="w-[150px] h-[213px]" />
+                        </div>
+                    ))}
+                </div>
+            )}
+
+            {!uid && <Alert message="로그인 후 이용해주세요!" />}
         </div>
     );
 }
