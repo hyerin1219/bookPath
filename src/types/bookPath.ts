@@ -1,7 +1,9 @@
 export interface IBookPath {
-    id: string;
+    uid: string;
+    isbn: string;
     writer: string;
     title: string;
     content: string;
-    img: string;
+    image: string;
+    date: any;
 }

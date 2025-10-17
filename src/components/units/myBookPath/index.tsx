@@ -1,14 +1,15 @@
 'use client';
-import Alert from '@/components/ui/alert';
-import { useAuth } from '@/hooks/useAuth';
 import { useEffect, useState } from 'react';
-import { IBookItems } from '@/types/bookItems';
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
-import { firebaseApp } from '@/components/commons/libraries/firebase';
-
-import { BookItem02 } from '@/components/ui/bookItem02';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
+
+import { useAuth } from '@/hooks/useAuth';
+
+import { IBookItems } from '@/types/bookItems';
+
+import { firebaseApp } from '@/components/commons/libraries/firebase';
+import Alert from '@/components/ui/alert';
+import { BookItem02 } from '@/components/ui/bookItem02';
 
 export default function MyBookPathPage() {
     const { user, uid } = useAuth();
@@ -42,9 +43,9 @@ export default function MyBookPathPage() {
             {myBooks.length === 0 ? (
                 <p className="text-gray-500 mt-10 text-center">등록된 책갈피가 없습니다.</p>
             ) : (
-                <div className="mt-4 space-y-2">
+                <div className="flex flex-wrap items-center gap-5 mt-4 space-y-2">
                     {myBooks.map((el) => (
-                        <div className="cursor-pointer" key={el.img} onClick={() => router.push(`/detail/${el.isbn}`)}>
+                        <div className="cursor-pointer" key={el.image} onClick={() => router.push(`/detail/${el.isbn}`)}>
                             <BookItem02 el={el} className="w-[150px] h-[213px]" />
                         </div>
                     ))}

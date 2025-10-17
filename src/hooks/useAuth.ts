@@ -1,55 +1,53 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { onAuthStateChanged, signInWithPopup } from 'firebase/auth';
-
-import type { User } from 'firebase/auth';
+import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth';
 import { auth, googleProvider } from '@/components/commons/libraries/firebase';
 
-// useAuth 훅을 만들어 Firebase 인증 상태를 관리
+// useAuth 훅: Firebase 인증 상태 관리
 export const useAuth = (): {
     user: User | null;
     uid?: string;
+    isOpen: boolean;
+    loading: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     handleLogin: () => Promise<void>;
     handleLogout: () => Promise<void>;
 } => {
     const [user, setUser] = useState<User | null>(null);
+    const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const uid = user?.uid;
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
-            if (firebaseUser !== null) {
-                setUser(firebaseUser);
-            } else {
-                setUser(null);
-            }
+            setUser(firebaseUser ?? null);
         });
 
-        // 컴포넌트가 unmount될 때 리스너를 정리
-        return () => {
-            unsubscribe();
-        };
+        return () => unsubscribe();
     }, []);
 
-    // Google 로그인 처리
     const handleLogin = async (): Promise<void> => {
+        if (loading) return;
+        setLoading(true);
+
         try {
             await signInWithPopup(auth, googleProvider);
-            console.log('auth', auth);
-            console.log('googleProvider', googleProvider);
-            // router.push("/dashboard"); // 로그인 시 첫 진입 페이지
+            setIsOpen(false);
         } catch (error) {
             console.error('로그인 실패:', error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    // 로그아웃 처리
     const handleLogout = async (): Promise<void> => {
         try {
-            await auth.signOut();
+            await signOut(auth);
         } catch (error) {
             console.error('로그아웃 실패:', error);
         }
     };
 
-    return { user, uid, handleLogin, handleLogout };
+    return { user, uid, loading, isOpen, setIsOpen, handleLogin, handleLogout };
 };

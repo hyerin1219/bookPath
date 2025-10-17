@@ -4,11 +4,9 @@ import LoginModal from '@/components/ui/loginModal';
 import { useAuth } from '@/hooks/useAuth';
 
 import Link from 'next/link';
-import { useState } from 'react';
 
 export default function Header() {
-    const [isOpen, setIsOpen] = useState(false);
-    const { user, handleLogout } = useAuth();
+    const { user, isOpen, handleLogout, setIsOpen, handleLogin, loading } = useAuth();
 
     const handleOpenLoginModal = () => setIsOpen(true);
 
@@ -33,7 +31,7 @@ export default function Header() {
                 )}
             </header>
 
-            {isOpen && <LoginModal setIsOpen={setIsOpen} />}
+            {isOpen && <LoginModal setIsOpen={setIsOpen} handleLogin={handleLogin} loading={loading} />}
         </>
     );
 }

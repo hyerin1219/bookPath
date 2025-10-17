@@ -8,5 +8,5 @@ export interface IBookItems {
     pubdate: string; // 출간일
     publisher: string; // 출판사
     title: string; // 책 제목
-    img: string;
+    content: string;
 }

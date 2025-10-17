@@ -6,7 +6,6 @@ interface BookItem02Props {
 }
 
 function BookItem02({ el, className }: BookItem02Props) {
-    console.log(el);
     return (
         <div className={`${className}`}>
             <div
