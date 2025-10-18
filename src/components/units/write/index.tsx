@@ -4,24 +4,39 @@ import { useRouter } from 'next/navigation';
 import { doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore/lite';
 
 import { IBookItems } from '@/types/bookItems';
+
 import { BookItem02 } from '@/components/ui/bookItem02';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import Alert from '@/components/ui/alert';
+
 import { useAuth } from '@/hooks/useAuth';
+import { useAlert } from '@/hooks/useAlert';
+import HeartRating from '@/components/ui/rating';
+import Rating from '@mui/material/Rating';
 
 interface WriteProps {
     mode: 'submit' | 'edit';
-    book?: IBookItems; // edit 모드에서는 필수
+    book?: IBookItems;
 }
 
 export default function Write({ mode, book: initialBook }: WriteProps) {
     const [book, setBook] = useState<IBookItems | null>(initialBook || null);
     const [content, setContent] = useState('');
-    const [editSuccess, seEditSuccess] = useState(false);
+    const [heartValue, setHeartValue] = useState(0);
+    const { showAlert, alertValue, triggerAlert } = useAlert();
     const { uid } = useAuth();
     const router = useRouter();
     const firestore = getFirestore(firebaseApp);
+
+    useEffect(() => {
+        if (uid === null) {
+            triggerAlert('로그인 후 이용해주세요!');
+            setTimeout(() => {
+                router.push('/');
+            }, 2000);
+        }
+    }, [uid]);
 
     useEffect(() => {
         if (!book && mode === 'submit') {
@@ -41,16 +56,21 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
     // 등록
     const handleSubmit = async () => {
         if (!book) return;
+        if (!content.trim()) {
+            triggerAlert('내용을 입력해주세요!');
+            return;
+        }
         try {
             const docRef = doc(firestore, 'bookPath', book.isbn);
             await setDoc(docRef, {
                 uid,
                 isbn: book.isbn,
-                writer: book.author,
+                author: book.author,
                 image: book.image,
                 title: book.title,
                 content,
                 date: new Date().toLocaleDateString(),
+                rating: heartValue,
             });
             router.push(`/detail/${book.isbn}`);
         } catch (error) {
@@ -60,11 +80,14 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
 
     // 수정
     const handleEdit = async () => {
-        console.log('수정모드', book);
         if (!book) return;
         try {
             const docRef = doc(firestore, 'bookPath', book.isbn);
-            await updateDoc(docRef, { content });
+            await updateDoc(docRef, { content, rating: heartValue });
+            triggerAlert('수정이 완료되었습니다!');
+            setTimeout(() => {
+                router.push(`/detail/${book.isbn}`);
+            }, 2000);
         } catch (error) {
             if (error instanceof Error) alert(error.message);
         }
@@ -89,9 +112,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
                     </div>
                     <div className="inline-flex ">
                         <span className="font-bold text-xl mr-1">Rating</span>
-                        <p>
-                            <button className="w-7 h-7 bg-[url('/images/write/icon_rating.png')] bg-contain bg-no-repeat"></button>
-                        </p>
+                        <HeartRating heartValue={heartValue} setHeartValue={setHeartValue} />
                     </div>
                 </div>
             </div>
@@ -106,8 +127,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
             </Button>
 
             {/* 알럿 */}
-            {!uid && <Alert message="로그인 후 이용해주세요!" />}
-            {editSuccess && <Alert message="수정이 완료되었습니다!" />}
+            {showAlert && <Alert alertValue={alertValue} />}
         </div>
     );
 }

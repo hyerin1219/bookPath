@@ -1,30 +1,57 @@
-import { getFirestore, doc, getDoc } from 'firebase/firestore/lite';
-import Link from 'next/link';
+'use client';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { getFirestore, doc } from 'firebase/firestore/lite';
+import { deleteDoc } from 'firebase/firestore/lite';
 
 import { IBookPath } from '@/types/bookPath';
 
+import { useAlert } from '@/hooks/useAlert';
+
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
+import DeleteModal from '@/components/ui/deleteModal';
+import Alert from '@/components/ui/alert';
+import HeartRating from '@/components/ui/rating';
 
 interface DetailPageProps {
-    params: { isbn: string };
+    book: IBookPath;
 }
 
-export default async function DetailPage({ params }: DetailPageProps) {
-    const isbn = params.isbn;
+export default function DetailPage({ book }: DetailPageProps) {
+    const { showAlert, alertValue, triggerAlert } = useAlert();
+    const [isOpen, setIsOpen] = useState(false);
+
+    const router = useRouter();
     const firestore = getFirestore(firebaseApp);
-    const docRef = doc(firestore, 'bookPath', isbn);
-    const docSnap = await getDoc(docRef);
-
-    if (!docSnap.exists()) {
-        return <p>책 정보를 찾을 수 없습니다.</p>;
-    }
-
-    const book = docSnap.data() as IBookPath;
 
     if (!book) return <p>로딩중...</p>;
 
-    const handleDelete = () => {};
+    // 수정
+    const handleEdit = () => {
+        router.push(`/detail/${book.isbn}/edit`);
+    };
+
+    // 삭제 모달
+    const handleOpenDeleteModal = () => {
+        setIsOpen(true);
+    };
+
+    // 삭제
+    const handleDelete = async () => {
+        try {
+            const docRef = doc(firestore, 'bookPath', book.isbn);
+            await deleteDoc(docRef);
+            setIsOpen(false);
+            triggerAlert('삭제가 완료되었습니다!');
+            setTimeout(() => {
+                router.push(`/myBookPath`);
+            }, 2000);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div className="size-full ">
             {/* 책 정보 */}
@@ -40,16 +67,15 @@ export default async function DetailPage({ params }: DetailPageProps) {
                         <span className="font-bold text-xl">Title</span> <span className="border-b-2">{book.title}</span>
                     </div>
                     <div>
-                        <span className="font-bold text-xl">Writer</span> <span className="border-b-2">{book.writer ? book.writer : '-'}</span>
+                        <span className="font-bold text-xl">Writer</span> <span className="border-b-2">{book.author ? book.author : '-'}</span>
                     </div>
                     <div>
                         <span className="font-bold text-xl">Date</span> <span className="border-b-2">{book.date}</span>
                     </div>
                     <div className="inline-flex ">
                         <span className="font-bold text-xl mr-1">Rating</span>
-                        <p>
-                            <button className="w-7 h-7 bg-[url('/images/write/icon_rating.png')] bg-contain bg-no-repeat"></button>
-                        </p>
+
+                        <HeartRating heartValue={book.rating} readOnly />
                     </div>
                 </div>
             </div>
@@ -60,11 +86,17 @@ export default async function DetailPage({ params }: DetailPageProps) {
             </div>
 
             <div className="flex justify-end items-center gap-3">
-                <Link href={`/detail/${isbn}/edit`}>
-                    <Button variant="submit">수정</Button>
-                </Link>
-                <Button variant="close">삭제</Button>
+                <Button onClick={handleEdit} variant="submit">
+                    수정
+                </Button>
+                <Button onClick={handleOpenDeleteModal} variant="close">
+                    삭제
+                </Button>
             </div>
+
+            {/* 알럿 */}
+            {showAlert && <Alert alertValue={alertValue} />}
+            {isOpen && <DeleteModal setIsOpen={setIsOpen} handleDelete={handleDelete} />}
         </div>
     );
 }

@@ -21,11 +21,11 @@ export default async function EditPage({ params }: EditPageProps) {
     const book: IBookPath = {
         uid: bookData.uid,
         isbn: bookData.isbn,
-        writer: bookData.writer,
+        author: bookData.author,
         image: bookData.image,
         title: bookData.title,
-        content: bookData.title,
-        date: bookData.title,
+        content: bookData.content,
+        date: bookData.date,
     };
 
     return <Write mode="edit" book={book} />;

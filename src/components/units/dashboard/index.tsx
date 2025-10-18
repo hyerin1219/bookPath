@@ -1,7 +1,10 @@
 import MenuLink from '@/components/ui/menuLink';
 import { Slide } from '@/components/ui/slide';
 
+import { useAuth } from '@/hooks/useAuth';
 export default function Dashboard() {
+    // const { uid } = useAuth();
+
     const Menu = [
         { src: 'search', menu: '책 찾아보기' },
         { src: 'search', menu: '독후감 쓰기' },
@@ -24,6 +27,12 @@ export default function Dashboard() {
                     ))}
                 </div>
             </section>
+
+            {/* {uid && (
+                <section className="mt-5 w-full">
+                    <div className="text-2xl mb-3">나의 책갈피</div>
+                </section>
+            )} */}
         </div>
     );
 }
