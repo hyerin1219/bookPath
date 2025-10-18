@@ -52,6 +52,11 @@ export default function DetailPage({ book }: DetailPageProps) {
         }
     };
 
+    // 뒤로 가기
+    const handleOpenMyBookPath = () => {
+        router.push(`/myBookPath`);
+    };
+
     return (
         <div className="size-full ">
             {/* 책 정보 */}
@@ -82,10 +87,11 @@ export default function DetailPage({ book }: DetailPageProps) {
 
             {/* 입력 칸 */}
             <div className="w-full h-130 bg-[url('/images/write/bg_grid.png')] bg-cover bg-no-repeat  mt-10 mb-5">
-                <div className="p-2 size-full overflow-y-auto">{book.content}</div>
+                <div className="p-2 size-full overflow-y-auto text-justify">{book.content}</div>
             </div>
 
             <div className="flex justify-end items-center gap-3">
+                <Button onClick={handleOpenMyBookPath}>나의 책갈피 가기</Button>
                 <Button onClick={handleEdit} variant="submit">
                     수정
                 </Button>

@@ -16,7 +16,7 @@ const StyledRating = styled(Rating)({
 
 interface IHeartRatingProps {
     heartValue: number;
-    setHeartValue?: Dispatch<SetStateAction<number>>; // 선택 가능 시
+    setHeartValue?: Dispatch<SetStateAction<number>>;
     readOnly?: boolean; // 읽기 전용 모드
 }
 

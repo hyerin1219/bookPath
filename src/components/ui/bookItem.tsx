@@ -2,7 +2,7 @@ import { IBookItems } from '@/types/bookItems';
 
 interface BookItemProps {
     el: IBookItems;
-    onClick?: () => void; // 🔥 클릭 이벤트 props 추가
+    onClick?: () => void;
 }
 
 function BookItem({ el, onClick }: BookItemProps) {
@@ -15,7 +15,6 @@ function BookItem({ el, onClick }: BookItemProps) {
                 <img className="w-[calc(100%-4px)] h-[calc(100%-4px)] object-cover rounded-[5px_2px_5px_2px] transition-transform duration-300 ease-in-out hover:scale-110" src={el.image} alt={`${el.title} 표지`} />
             </div>
             <div className="w-full break-keep-all">
-                {/* <p>{el.title.replace(/\(.*?\)/g, '')}</p> */}
                 <p className="overflow-hidden text-ellipsis break-words" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                     {el.title}
                 </p>

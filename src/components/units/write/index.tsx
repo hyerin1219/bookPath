@@ -119,7 +119,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
 
             {/* 입력 칸 */}
             <div className="w-full h-130 bg-[url('/images/write/bg_grid.png')] bg-cover bg-no-repeat mt-10 mb-5">
-                <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} className="size-full resize-none p-2" />
+                <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} className="size-full resize-none p-2 text-justify" />
             </div>
 
             <Button onClick={mode === 'submit' ? handleSubmit : handleEdit} variant="submit">
