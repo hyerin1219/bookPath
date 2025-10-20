@@ -1,10 +1,7 @@
 import MenuLink from '@/components/ui/menuLink';
 import { Slide } from '@/components/ui/slide';
 
-import { useAuth } from '@/hooks/useAuth';
 export default function Dashboard() {
-    // const { uid } = useAuth();
-
     const Menu = [
         { src: 'search', menu: '책 찾아보기' },
         { src: 'search', menu: '독후감 쓰기' },
