@@ -13,7 +13,6 @@ import Alert from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 import HeartRating from '@/components/ui/rating';
-import Rating from '@mui/material/Rating';
 
 interface WriteProps {
     mode: 'submit' | 'edit';
@@ -50,6 +49,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
 
         if (book && mode === 'edit') {
             setContent(book.content || '');
+            setHeartValue(book.rating || 0);
         }
     }, [book, mode]);
 
@@ -108,7 +108,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
                         <span className="font-bold text-xl">Writer</span> <span className="border-b-2">{book.author}</span>
                     </div>
                     <div>
-                        <span className="font-bold text-xl">Date</span> <span className="border-b-2">{new Date().toLocaleDateString()}</span>
+                        <span className="font-bold text-xl">Date</span> <span className="border-b-2">{book?.date || new Date().toLocaleDateString()}</span>
                     </div>
                     <div className="inline-flex ">
                         <span className="font-bold text-xl mr-1">Rating</span>

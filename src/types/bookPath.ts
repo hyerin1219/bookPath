@@ -5,6 +5,6 @@ export interface IBookPath {
     title: string;
     content: string;
     image: string;
-    date: any;
+    date: string;
     rating: number;
 }

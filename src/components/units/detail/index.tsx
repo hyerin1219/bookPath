@@ -27,6 +27,8 @@ export default function DetailPage({ book }: DetailPageProps) {
 
     if (!book) return <p>로딩중...</p>;
 
+    console.log(book);
+
     // 수정
     const handleEdit = () => {
         router.push(`/detail/${book.isbn}/edit`);
@@ -52,7 +54,7 @@ export default function DetailPage({ book }: DetailPageProps) {
         }
     };
 
-    // 뒤로 가기
+    // myBookPath 가기
     const handleOpenMyBookPath = () => {
         router.push(`/myBookPath`);
     };

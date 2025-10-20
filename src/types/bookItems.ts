@@ -10,4 +10,5 @@ export interface IBookItems {
     title: string; // 책 제목
     content: string;
     rating: number;
+    date: string;
 }
