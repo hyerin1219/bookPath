@@ -7,12 +7,14 @@ import { useState } from 'react';
 import Alert from './alert';
 import { collection, addDoc, getFirestore, query, getDocs, where } from 'firebase/firestore';
 import { firebaseApp } from '../commons/libraries/firebase';
+import { useAuth } from '@/hooks/useAuth';
 
 interface BookClubProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export default function CreateBookClubModal({ setIsOpen }: BookClubProps) {
+    const { uid } = useAuth();
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const [clubName, setClubName] = useState('');
     const [password, setPassword] = useState('');
@@ -27,29 +29,29 @@ export default function CreateBookClubModal({ setIsOpen }: BookClubProps) {
             return;
         }
 
-        const q = query(collection(firestore, 'bookClub'), where('clubName', '==', clubName));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            triggerAlert('이미 존재하는 모임 이름입니다!');
-            return;
-        }
-
         if (!password.trim()) {
             triggerAlert('비밀번호를 입력해주세요!');
             return;
         }
 
-        if (password.length <= 4) {
+        if (password.length < 4) {
             triggerAlert('비밀번호가 너무 짧습니다!');
             return;
         }
 
         try {
+            const q = query(collection(firestore, 'bookClub'), where('clubName', '==', clubName));
+            const querySnapshot = await getDocs(q);
+
+            if (!querySnapshot.empty) {
+                triggerAlert('이미 존재하는 모임 이름입니다!');
+                return;
+            }
             await addDoc(collection(firestore, 'bookClub'), {
                 clubName,
                 password,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date().toLocaleDateString(),
+                members: [uid],
             });
 
             triggerAlert('모임이 등록되었습니다!');
@@ -63,17 +65,17 @@ export default function CreateBookClubModal({ setIsOpen }: BookClubProps) {
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
             <motion.form onSubmit={handleSubmit} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="relative flex flex-col items-center gap-5 bg-white p-10 py-5 rounded-xl shadow-[2px_2px_6px_rgba(0,0,0,0.1)]">
-                <div className="text-xl">책갈피 모임 만들기</div>
+                <div className="text-2xl">책갈피 모임 만들기</div>
 
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 text-xl">
                     <div className="flex items-center gap-2">
                         <p>모임이름</p>
-                        <input value={clubName} onChange={(e) => setClubName(e.target.value)} type="text" className="bg-[#eee] p-1 rounded" />
+                        <input value={clubName} onChange={(e) => setClubName(e.target.value)} type="text" className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl" />
                     </div>
 
                     <div className="flex items-center gap-2">
                         <p>비밀번호</p>
-                        <input value={password} onChange={(e) => setPassword(e.target.value)} type="text" className="bg-[#eee] p-1 rounded" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl" />
                     </div>
                 </div>
                 {/* 버튼 */}

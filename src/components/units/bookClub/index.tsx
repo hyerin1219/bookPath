@@ -47,8 +47,10 @@ export default function BookClub() {
                 </div>
 
                 {/* tabContent */}
-                {activeTab === 'all' && <AllBookClub />}
-                {activeTab === 'my' && <MyBookClub />}
+                <div className="mt-5">
+                    {activeTab === 'all' && <AllBookClub />}
+                    {activeTab === 'my' && <MyBookClub />}
+                </div>
             </div>
 
             {/* 알럿 */}
