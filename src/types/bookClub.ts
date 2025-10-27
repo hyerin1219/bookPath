@@ -3,5 +3,8 @@ export interface IBookClub {
     clubName: string;
     password: string;
     createdAt: string;
-    members: string[];
+    members: {
+        user: string;
+        nickname: string;
+    }[];
 }

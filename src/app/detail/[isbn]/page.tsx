@@ -3,11 +3,11 @@ import Detail from '@/components/units/detail';
 import { IBookPath } from '@/types/bookPath';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
-interface PageProps {
+interface IDetailPageProps {
     params: { isbn: string };
 }
 
-export default async function DetailPage({ params }: PageProps) {
+export default async function DetailPage({ params }: IDetailPageProps) {
     const firestore = getFirestore(firebaseApp);
     const docRef = doc(firestore, 'bookPath', params.isbn);
     const docSnap = await getDoc(docRef);

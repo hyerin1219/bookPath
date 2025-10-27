@@ -1,26 +1,26 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { collection, getDocs, getFirestore, doc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
-
+import { collection, getFirestore, doc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
 import { IBookClub } from '@/types/bookClub';
-
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import JoinBookClubModal from '@/components/ui/joinBookClubModal';
 import Alert from '@/components/ui/alert';
-
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
+import { useRouter } from 'next/navigation';
 
 export default function AllBookClub() {
-    const { uid } = useAuth();
+    const { uid, user } = useAuth();
     const [clubs, setClubs] = useState<IBookClub[]>([]);
     const [password, setPassword] = useState('');
-    const firestore = getFirestore(firebaseApp);
     const [isOpen, setIsOpen] = useState(false);
     const [selectedClub, setSelectedClub] = useState<IBookClub | null>(null);
+
+    const firestore = getFirestore(firebaseApp);
     const { showAlert, alertValue, triggerAlert } = useAlert();
+    const router = useRouter();
 
     useEffect(() => {
         const colRef = collection(firestore, 'bookClub');
@@ -33,64 +33,64 @@ export default function AllBookClub() {
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [firestore]);
 
-    const handleJoin = async (club: IBookClub, password: string) => {
-        // if (club.members.includes(uid!)) {
-        //     return triggerAlert('이미 가입한 모임입니다!');
-        // }
+    const handleJoin = async (club: IBookClub, passwordInput: string) => {
+        if (!uid) return triggerAlert('로그인이 필요합니다!');
 
-        if (password !== club.password) {
-            triggerAlert('비밀번호가 일치하지 않습니다!');
-        }
+        // 이미 가입 여부 체크
+        const isJoined = club.members.some((member) => member.user === uid);
+        if (isJoined) return triggerAlert('이미 가입한 모임입니다!');
+
+        if (passwordInput !== club.password) return triggerAlert('비밀번호가 일치하지 않습니다!');
 
         try {
             const docRef = doc(firestore, 'bookClub', club.id);
-            await updateDoc(docRef, { members: arrayUnion(uid) });
+            const newMember = { user: uid, nickname: user?.displayName || '익명' };
+
+            // Firestore 업데이트
+            await updateDoc(docRef, { members: arrayUnion(newMember) });
+
+            // 상태 업데이트
+            setClubs(clubs.map((c) => (c.id === club.id ? { ...c, members: [...c.members, newMember] } : c)));
+
             triggerAlert('가입 완료!');
-            setClubs(clubs.map((c) => (c.id === club.id ? { ...c, members: [...c.members, uid!] } : c)));
             setIsOpen(false);
         } catch (error) {
             if (error instanceof Error) alert(error.message);
         }
     };
 
-    if (clubs.length === 0) return <p>등록된 모임이 없습니다.</p>;
+    if (clubs.length === 0) return <p>등록된 책갈피 모임이 없습니다.</p>;
 
     return (
         <div className="">
             <ul className="flex flex-col gap-2 mt-5">
-                {clubs.map((el) => (
-                    <li key={el.id} className="w-full border-b pb-1 last:border-b-0 flex justify-between">
-                        <span>{el.clubName}</span>
-                        {(el.members || []).includes(uid!) ? (
-                            <Button variant="close" disabled>
-                                가입 완료
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="submit"
-                                onClick={() => {
-                                    setSelectedClub(el);
-                                    setIsOpen(true);
-                                }}
-                            >
-                                가입하기
-                            </Button>
-                        )}
-                    </li>
-                ))}
+                {clubs.map((club) => {
+                    const isJoined = club.members.some((member) => member.user === uid);
+                    return (
+                        <li key={club.id} className="flex items-center justify-between w-full h-14 border-b last:border-b-0">
+                            <span>{club.clubName}</span>
+                            {isJoined ? (
+                                <Button onClick={() => router.push(`/bookClubDetail/${club.id}`)}>모임 가기</Button>
+                            ) : (
+                                <Button
+                                    variant="submit"
+                                    onClick={() => {
+                                        setSelectedClub(club);
+                                        setIsOpen(true);
+                                    }}
+                                >
+                                    가입하기
+                                </Button>
+                            )}
+                        </li>
+                    );
+                })}
             </ul>
+
             {showAlert && <Alert alertValue={alertValue} />}
-            {isOpen && selectedClub && (
-                <JoinBookClubModal
-                    setIsOpen={setIsOpen}
-                    selectedClub={selectedClub}
-                    password={password}
-                    setPassword={setPassword}
-                    handleJoin={(password) => handleJoin(selectedClub, password)} //
-                />
-            )}
+            {isOpen && selectedClub && <JoinBookClubModal setIsOpen={setIsOpen} selectedClub={selectedClub} password={password} setPassword={setPassword} handleJoin={(pw) => handleJoin(selectedClub, pw)} />}
         </div>
     );
 }

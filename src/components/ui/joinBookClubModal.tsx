@@ -35,7 +35,6 @@ export default function JoinBookClubModal({ setIsOpen, selectedClub, handleJoin,
                             setIsOpen(false);
                             setPassword('');
                         }}
-                        className=""
                     >
                         닫기
                     </Button>
