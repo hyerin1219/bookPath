@@ -18,9 +18,12 @@ const ImageUpload = ({ setImages, images }: IImageUploadProps) => {
         <ImageUploading multiple value={images} onChange={onChange} maxNumber={maxNumber}>
             {({ imageList, onImageUpload, onImageRemoveAll, onImageRemove }) => (
                 <div>
-                    <Button type="button" onClick={onImageUpload} className="mb-2">
-                        사진 추가하기
-                    </Button>
+                    <div className="flex items-center gap-2 mb-1">
+                        <p>사진</p>
+                        <Button type="button" onClick={onImageUpload} className="mb-2">
+                            사진 추가하기
+                        </Button>
+                    </div>
                     <div className="flex gap-3 items-center">
                         {imageList.map((image, index) => (
                             <div className="relative" key={index}>

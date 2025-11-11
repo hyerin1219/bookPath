@@ -6,7 +6,7 @@ export default function Dashboard() {
         { src: 'search', menu: '책 찾아보기', active: true },
         { src: 'search', menu: '독후감 쓰기', active: true },
         { src: 'myBookPath', menu: '나의 책갈피', active: true },
-        { src: 'bookClub', menu: '책갈피 모임', active: false },
+        { src: 'bookClub', menu: '책갈피 모임', active: true },
     ];
     return (
         <div>

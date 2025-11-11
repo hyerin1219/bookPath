@@ -20,7 +20,7 @@ export default async function BookClubDetailPage({ params }: IBookClubDetailProp
     const bookClubData = docSnap.data() as IBookClub;
 
     // bookClubBoard (모임 ID 기준으로 여러 게시글 가져오기)
-    const boardColRef = collection(firestore, 'bookCluBoard');
+    const boardColRef = collection(firestore, 'bookClubBoard');
     const q = query(boardColRef, where('clubId', '==', id));
     const querySnapshot = await getDocs(q);
 

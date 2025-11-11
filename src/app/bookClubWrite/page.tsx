@@ -1,5 +1,5 @@
 import BookClubWrite from '@/components/units/bookClubWrite';
 
 export default async function BookClubWritePage() {
-    return <BookClubWrite />;
+    return <BookClubWrite mode="submit" />;
 }
