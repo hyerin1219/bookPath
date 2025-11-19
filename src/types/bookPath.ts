@@ -7,4 +7,5 @@ export interface IBookPath {
     image: string;
     date: string;
     rating: number;
+    description: string;
 }

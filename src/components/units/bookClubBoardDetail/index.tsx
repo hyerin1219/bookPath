@@ -1,22 +1,18 @@
 'use client';
-
-import { Button } from '@/components/ui/button';
-import { IBookClubBoard } from '@/types/bookClubBoard';
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getFirestore, doc } from 'firebase/firestore/lite';
 import { deleteDoc } from 'firebase/firestore/lite';
 
-import { IBookPath } from '@/types/bookPath';
-
-import { useAlert } from '@/hooks/useAlert';
+import { IBookClubBoard } from '@/types/bookClubBoard';
 
 import { firebaseApp } from '@/components/commons/libraries/firebase';
-
 import DeleteModal from '@/components/ui/deleteModal';
 import Alert from '@/components/ui/alert';
-import HeartRating from '@/components/ui/rating';
+import { Button } from '@/components/ui/button';
+
+import { useAuth } from '@/hooks/useAuth';
+import { useAlert } from '@/hooks/useAlert';
 
 interface IBookClubBoardDetailProps {
     board: IBookClubBoard;
@@ -28,6 +24,7 @@ export default function BookClubBoardDetail({ board, id }: IBookClubBoardDetailP
     const [isOpen, setIsOpen] = useState(false);
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const firestore = getFirestore(firebaseApp);
+    const { user, uid } = useAuth();
 
     // 삭제 모달
     const handleOpenDeleteModal = () => {
@@ -61,14 +58,16 @@ export default function BookClubBoardDetail({ board, id }: IBookClubBoardDetailP
                     <div className="min-h-30 bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl w-[90%]">{board.content}</div>
                 </div>
 
-                <div className="flex items-center justify-end gap-3 mt-5">
-                    <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
-                        수정
-                    </Button>
-                    <Button onClick={handleDelete} variant="close">
-                        삭제
-                    </Button>
-                </div>
+                {uid && (
+                    <div className="flex items-center justify-end gap-3 mt-5">
+                        <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
+                            수정
+                        </Button>
+                        <Button onClick={handleOpenDeleteModal} variant="close">
+                            삭제
+                        </Button>
+                    </div>
+                )}
             </div>
 
             {/* 알럿 */}

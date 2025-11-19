@@ -97,7 +97,7 @@ export default function BookClubWrite({ mode, bookClubBoardData }: IBookClubWrit
 
                 <div className="w-full flex gap-2">
                     <p>내용</p>
-                    <textarea rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[200px] bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 rounded-xl w-[90%] custom-scroll" />
+                    <textarea spellCheck="false" rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[200px] bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 rounded-xl w-[90%] custom-scroll" />
                 </div>
 
                 <div className="text-right">

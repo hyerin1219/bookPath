@@ -2,7 +2,6 @@ import Write from '@/components/units/write';
 import { getFirestore, doc, getDoc } from 'firebase/firestore/lite';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { IBookPath } from '@/types/bookPath';
-import { IBookItems } from '@/types/bookItems';
 
 interface EditPageProps {
     params: { isbn: string };
@@ -27,6 +26,7 @@ export default async function EditPage({ params }: EditPageProps) {
         content: bookData.content,
         date: bookData.date,
         rating: bookData.rating,
+        description: bookData.description,
     };
 
     return <Write mode="edit" book={book} />;

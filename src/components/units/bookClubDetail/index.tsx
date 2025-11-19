@@ -2,12 +2,9 @@
 import { Button } from '@/components/ui/button';
 import { IBookClub } from '@/types/bookClub';
 import { IBookClubBoard } from '@/types/bookClubBoard';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 export default function BookClubDetail({ bookClubData, bookClubBoard }: { bookClubData: IBookClub; bookClubBoard: IBookClubBoard[] }) {
-    // const searchParams = useSearchParams();
-    // const clubId = searchParams.get('clubId');
-
     const router = useRouter();
 
     return (
