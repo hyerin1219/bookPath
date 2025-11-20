@@ -27,8 +27,8 @@ export default function BookClubDetail({ bookClubData, bookClubBoard }: { bookCl
                 {bookClubBoard.length > 0 ? (
                     bookClubBoard.map((el) => (
                         <div onClick={() => router.push(`/bookClubBoardDetail/${el.id}`)} key={el.id} className="flex justify-between border-b py-2 cursor-pointer">
-                            <div className="font-bold">{el.title}</div>
-                            <div className="font-bold">{el.nickname}</div>
+                            <div>{el.title}</div>
+                            <div>{el.nickname}</div>
                         </div>
                     ))
                 ) : (
