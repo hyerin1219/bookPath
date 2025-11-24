@@ -8,4 +8,5 @@ export interface IBookPath {
     date: string;
     rating: number;
     description: string;
+    publisher: string;
 }

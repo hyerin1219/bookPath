@@ -45,11 +45,11 @@ export default function Modal({ selectedBook, setSelectedBook }: IModalProps) {
                             <Button variant="submit" onClick={handleWrite}>
                                 독후감 쓰기
                             </Button>
-                            <Button>
+                            {/* <Button>
                                 <Link target="_blank" href={selectedBook.link}>
                                     네이버에서 보기
                                 </Link>
-                            </Button>
+                            </Button> */}
                             <Button variant="close" onClick={() => setSelectedBook(null)}>
                                 닫기
                             </Button>

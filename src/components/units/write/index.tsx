@@ -72,6 +72,7 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
                 date: new Date().toLocaleDateString(),
                 rating: heartValue,
                 description: book.description,
+                publisher: book.publisher,
             });
             router.push(`/detail/${book.isbn}`);
         } catch (error) {

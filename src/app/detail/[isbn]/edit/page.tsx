@@ -27,6 +27,7 @@ export default async function EditPage({ params }: EditPageProps) {
         date: bookData.date,
         rating: bookData.rating,
         description: bookData.description,
+        publisher: bookData.publisher,
     };
 
     return <Write mode="edit" book={book} />;

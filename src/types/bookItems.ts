@@ -7,8 +7,8 @@ export interface IBookItems {
     content: string;
     rating: number;
     date: string;
+    // link: string; // 상세 페이지 URL
     //iscount: string; // 할인 가격
-    //link: string; // 상세 페이지 URL
     //pubdate: string; // 출간일
-    //publisher: string; // 출판사
+    publisher: string; // 출판사
 }
