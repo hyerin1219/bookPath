@@ -24,7 +24,7 @@ export function Slide() {
     );
 
     return (
-        <div>
+        <div className="w-full">
             <div className="w-full overflow-hidden" ref={emblaRef}>
                 <div className="flex space-x-4 px-4">
                     {loading

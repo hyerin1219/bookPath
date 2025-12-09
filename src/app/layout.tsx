@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/commons/layout/header';
 import { BookProvider } from '@/hooks/useBookContext';
+import MenuLink from '@/components/ui/menuLink';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -26,9 +27,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ko">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+            <body className={`${geistSans.variable} ${geistMono.variable} antialiased  md:h-screen h-full`}>
                 <Header />
-                <main>
+                <main className=" w-full h-[calc(100%-100px)] h-full">
                     <BookProvider>{children}</BookProvider>
                 </main>
             </body>

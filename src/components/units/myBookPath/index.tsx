@@ -52,7 +52,7 @@ export default function MyBookPathPage() {
             {myBooks.length === 0 ? (
                 <p className="text-gray-500 mt-10 text-center">등록된 책갈피가 없습니다.</p>
             ) : (
-                <div className="flex flex-wrap items-center gap-5 mt-4 space-y-2">
+                <div className="flex flex-wrap items-center gap-2 w-full mt-4 space-y-2">
                     {myBooks.map((el) => (
                         <div className="flex flex-col items-center cursor-pointer" key={el.image} onClick={() => router.push(`/detail/${el.isbn}`)}>
                             <BookItem02 el={el} className="w-[150px] h-[213px]" />

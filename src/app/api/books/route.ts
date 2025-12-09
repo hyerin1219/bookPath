@@ -1,6 +1,7 @@
 import axios from 'axios';
+import type { NextRequest } from 'next/server';
 
-export async function GET(req) {
+export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const query = searchParams.get('query') || '';
     const sort = searchParams.get('sort') || 'date';
@@ -15,16 +16,20 @@ export async function GET(req) {
                 display: 10,
             },
             headers: {
-                'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID,
-                'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET,
+                'X-Naver-Client-Id': process.env.NAVER_CLIENT_ID!,
+                'X-Naver-Client-Secret': process.env.NAVER_CLIENT_SECRET!,
             },
         });
 
         return new Response(JSON.stringify(response.data), {
             status: 200,
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
-    } catch (err) {
-        return new Response(JSON.stringify({ error: 'Failed to fetch' }), { status: 500 });
+    } catch (error) {
+        return new Response(JSON.stringify({ error: 'Failed to fetch' }), {
+            status: 500,
+        });
     }
 }

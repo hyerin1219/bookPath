@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { IBookItems } from '@/types/bookItems';
 
@@ -8,11 +8,26 @@ import { useBookData } from '@/hooks/useBookData';
 import { BookItem } from '@/components/ui/bookItem';
 import { Button } from '@/components/ui/button';
 import Modal from '@/components/ui/modal';
+import SearchBox from '@/components/ui/searchBox';
+import { useSearchParams } from 'next/navigation';
 
 export default function Search() {
+    const searchParams = useSearchParams();
+    const initialKeyword = searchParams.get('keyword') || '';
+
     const { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks } = useBookData('');
     const [input, setInput] = useState('');
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
+
+    console.log('키워드', initialKeyword);
+
+    useEffect(() => {
+        if (initialKeyword) {
+            setKeyword(initialKeyword);
+            setInput(initialKeyword);
+            fetchBooks(initialKeyword, 1);
+        }
+    }, [initialKeyword]);
 
     const handleSearch = () => {
         const trimmed = input.trim();
@@ -38,21 +53,16 @@ export default function Search() {
         }
     };
 
-    const handlePageClick = (pageNumber: number) => {
-        if (pageNumber === page) return;
-        setPage(pageNumber);
-        fetchBooks(keyword, pageNumber);
-    };
+    // const handlePageClick = (pageNumber: number) => {
+    //     if (pageNumber === page) return;
+    //     setPage(pageNumber);
+    //     fetchBooks(keyword, pageNumber);
+    // };
 
     return (
         <div>
             {/* 검색 입력창 */}
-            <div className="flex items-center justify-between mb-4">
-                <input value={input} onKeyDown={(e) => e.key === 'Enter' && handleSearch()} onChange={(e) => setInput(e.target.value)} type="text" className="w-[85%] p-2 bg-[#eee] rounded-xl shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)]" placeholder="검색어를 입력해보세요." />
-                <Button variant="search" onClick={handleSearch}>
-                    검색
-                </Button>
-            </div>
+            <SearchBox value={input} onChange={setInput} onClick={handleSearch} placeholder="검색어를 입력해보세요." />
 
             {/* 검색 결과 */}
             <div className="flex flex-wrap justify-center m-5 my-10 gap-8">

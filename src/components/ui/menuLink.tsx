@@ -5,25 +5,30 @@ import { motion } from 'framer-motion';
 
 const MotionLink = motion(Link);
 
-const MenuLink = ({ el }: { el: { src: string; menu: string; active: boolean } }) => {
+interface IMenuLinkProps {
+    onSelect: () => void;
+}
+
+const MenuLink = ({ onSelect }: IMenuLinkProps) => {
+    const Menu = [
+        { src: '/', menu: '홈', icon: 'home' },
+        { src: '/search', menu: '책 찾아보기', icon: 'search' },
+        { src: '/search', menu: '독후감 쓰기', icon: 'write' },
+        { src: '/myBookPath', menu: '나의 책갈피', icon: 'my' },
+        { src: '/bookClub', menu: '책갈피 모임', icon: 'bookClub' },
+    ];
+
     return (
-        <MotionLink
-            style={{
-                pointerEvents: el.active ? 'auto' : 'none',
-            }}
-            href={el.src}
-            className="block w-[24%] rounded-xl bg-slate-100 p-4 text-center 
-                 text-gray-700 font-medium shadow-sm break-keep-all
-                 transition-all duration-200 hover:bg-blue-100"
-            whileHover={{
-                scale: 1.05,
-                y: -4,
-                boxShadow: '0px 6px 12px rgba(0,0,0,0.15)',
-            }}
-            transition={{ type: 'spring', stiffness: 300, damping: 15 }}
-        >
-            {el.menu}
-        </MotionLink>
+        <div className="flex flex-col gap-5">
+            {Menu.map((el) => (
+                <MotionLink key={el.icon} href={el.src} onClick={onSelect} className="flex items-center gap-3 text-gray-700 font-medium group" transition={{ type: 'spring', stiffness: 300, damping: 15 }}>
+                    <span className="rounded-xl bg-[#eee] w-9 h-9 flex items-center justify-center group-hover:bg-yellow-100 transition">
+                        <img className="w-5" src={`/images/icon_${el.icon}.png`} />
+                    </span>
+                    <span>{el.menu}</span>
+                </MotionLink>
+            ))}
+        </div>
     );
 };
 
