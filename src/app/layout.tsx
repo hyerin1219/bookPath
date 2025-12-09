@@ -32,6 +32,8 @@ export default function RootLayout({
                 <main className=" w-full h-[calc(100%-100px)] h-full">
                     <BookProvider>{children}</BookProvider>
                 </main>
+
+                <div className="absolute bottom-0 right-0 md:w-[500px] md:h-[500px] w-[300px] h-[300px] rounded-full bg-[#EBB400] blur-xl opacity-10 z-[-1]"></div>
             </body>
         </html>
     );

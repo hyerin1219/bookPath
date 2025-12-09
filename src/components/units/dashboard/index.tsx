@@ -24,7 +24,12 @@ export default function Dashboard() {
     const { user } = useAuth();
 
     return (
-        <div className="w-full h-full space-y-14 py-10 px-2">
+        <div className="w-full h-full space-y-12 py-8 px-2">
+            {/* <div className="w-[28%] pt-3 ">
+                <h3 className="text-2xl leading-snug font-semibold">책 속에서 발견한 생각들이, 나만의 길을 이어줍니다.</h3>
+
+                <p className="text-gray-500 text-sm mt-4 leading-relaxed">책 속에서 발견한 문장과 생각을 기록해보세요.</p>
+            </div> */}
             {/* 검색 */}
             <section className="space-y-2">
                 <h2 className="text-2xl font-semibold tracking-tight">어떤 책을 찾고 계세요?</h2>
@@ -36,20 +41,10 @@ export default function Dashboard() {
             </section>
 
             {/* 추천 도서 */}
-            <section className="flex items-start justify-between gap-10">
-                {/* 왼쪽 소개 영역 */}
-                <div className="w-[28%] pt-3 ">
-                    <h3 className="text-2xl leading-snug font-semibold ">당책 속에서 발견한 생각들이, 나만의 길을 이어줍니다.</h3>
+            <section>
+                <h3 className="text-xl font-semibold mb-4">오늘의 추천 도서</h3>
 
-                    <p className="text-gray-500 text-sm mt-4 leading-relaxed">책 속에서 발견한 문장과 생각을 기록해보세요.</p>
-                </div>
-
-                {/* 오른쪽 슬라이드 */}
-                <div className="w-[72%]">
-                    <h3 className="text-xl font-semibold mb-4">오늘의 추천 도서</h3>
-
-                    <Slide />
-                </div>
+                <Slide />
             </section>
 
             {/* 월별 독서량 */}

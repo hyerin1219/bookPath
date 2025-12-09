@@ -1,23 +1,21 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
 
-import { IBookItems } from '@/types/bookItems';
-
-import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { BookItem02 } from '@/components/ui/bookItem02';
 import Alert from '@/components/ui/alert';
 
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 import HeartRating from '@/components/ui/rating';
+import { useMyBooks } from '@/hooks/useMyBooks';
 
 export default function MyBookPathPage() {
     const { user, uid } = useAuth();
-    const [myBooks, setMyBooks] = useState<IBookItems[]>([]);
+
     const router = useRouter();
     const { showAlert, alertValue, triggerAlert } = useAlert();
+    const { myBooks, loading } = useMyBooks();
 
     useEffect(() => {
         const fetchMyBooks = async () => {
@@ -29,17 +27,6 @@ export default function MyBookPathPage() {
             }
 
             if (!uid) return;
-
-            const firestore = getFirestore(firebaseApp);
-            const q = query(collection(firestore, 'bookPath'), where('uid', '==', uid));
-            const snapshot = await getDocs(q);
-
-            const books = snapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            })) as any;
-
-            setMyBooks(books);
         };
 
         fetchMyBooks();

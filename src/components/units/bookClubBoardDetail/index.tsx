@@ -24,7 +24,7 @@ export default function BookClubBoardDetail({ board, id }: IBookClubBoardDetailP
     const [isOpen, setIsOpen] = useState(false);
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const firestore = getFirestore(firebaseApp);
-    const { user, uid } = useAuth();
+    const { uid } = useAuth();
 
     // 삭제 모달
     const handleOpenDeleteModal = () => {

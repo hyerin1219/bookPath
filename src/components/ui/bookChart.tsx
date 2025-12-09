@@ -13,7 +13,7 @@ interface IChartData {
 
 export function BookChart() {
     const [chartData, setChartData] = useState<IChartData[]>([]);
-    const { user, uid } = useAuth();
+    const { uid } = useAuth();
     const { myBooks, loading } = useMyBooks();
 
     function toDate(date: unknown): Date {
