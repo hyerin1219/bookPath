@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import Modal from '@/components/ui/modal';
 import SearchBox from '@/components/ui/searchBox';
 import { useSearchParams } from 'next/navigation';
+import Pagination from '@/components/ui/pagination';
 
 export default function Search() {
     const searchParams = useSearchParams();
@@ -18,8 +19,6 @@ export default function Search() {
     const { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks } = useBookData('');
     const [input, setInput] = useState('');
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
-
-    console.log('키워드', initialKeyword);
 
     useEffect(() => {
         if (initialKeyword) {
@@ -53,19 +52,13 @@ export default function Search() {
         }
     };
 
-    // const handlePageClick = (pageNumber: number) => {
-    //     if (pageNumber === page) return;
-    //     setPage(pageNumber);
-    //     fetchBooks(keyword, pageNumber);
-    // };
-
     return (
-        <div>
+        <div className="w-full py-8">
             {/* 검색 입력창 */}
             <SearchBox value={input} onChange={setInput} onClick={handleSearch} placeholder="검색어를 입력해보세요." />
 
             {/* 검색 결과 */}
-            <div className="flex flex-wrap justify-center m-5 my-10 gap-8">
+            <div className="flex flex-wrap justify-center m-5 my-5 gap-8">
                 {loading
                     ? Array.from({ length: 10 }).map((_, idx) => (
                           <div key={idx} className="flex-shrink-0 inline-flex flex-col items-center text-center w-[150px]">
@@ -79,21 +72,7 @@ export default function Search() {
             </div>
 
             {/* 페이지네이션 */}
-            {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-3 mb-10">
-                    <Button variant="search" onClick={handlePrev} disabled={page === 1}>
-                        이전
-                    </Button>
-
-                    <p>
-                        <span>{page}</span>/ <span>{totalData}</span>
-                    </p>
-
-                    <Button variant="search" onClick={handleNext} disabled={page === totalPages}>
-                        다음
-                    </Button>
-                </div>
-            )}
+            {totalPages > 1 && <Pagination onPrev={handlePrev} onNext={handleNext} totalPages={totalPages} page={page} />}
 
             {/* 모달 */}
             <Modal selectedBook={selectedBook} setSelectedBook={setSelectedBook} />

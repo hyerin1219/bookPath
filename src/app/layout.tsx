@@ -29,11 +29,12 @@ export default function RootLayout({
         <html lang="ko">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased  md:h-screen h-full`}>
                 <Header />
-                <main className=" w-full h-[calc(100%-100px)] h-full">
+                <main className=" w-full h-[calc(100%-100px)]">
                     <BookProvider>{children}</BookProvider>
                 </main>
 
-                <div className="absolute bottom-0 right-0 md:w-[500px] md:h-[500px] w-[300px] h-[300px] rounded-full bg-[#EBB400] blur-xl opacity-10 z-[-1]"></div>
+                {/* ui 꾸미기 */}
+                <div className="absolute bottom-0 right-0 md:w-[500px] md:h-[500px] w-[300px] h-[300px] rounded-full bg-[#EBB400] blur-2xl opacity-10 z-[-1]"></div>
             </body>
         </html>
     );

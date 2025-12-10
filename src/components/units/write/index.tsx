@@ -101,7 +101,8 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
         <div className="size-full text-right">
             {/* 책 정보 */}
             <div className="w-full flex justify-center items-center gap-10">
-                <BookItem02 className="flex-shrink-0 w-[150px] h-[213px]" el={book} />
+                <BookItem02 scale={false} className="flex-shrink-0 w-[150px] h-[213px]" el={book} />
+
                 <div className="flex flex-col gap-2 text-left">
                     <div>
                         <span className="font-bold text-xl">Title</span> <span className="border-b-2">{book.title}</span>
@@ -120,7 +121,8 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
             </div>
 
             {/* 입력 칸 */}
-            <div className="w-full h-130 bg-[url('/images/write/bg_grid.png')] bg-cover bg-no-repeat mt-10 mb-5">
+
+            <div className="w-full h-130  mt-10 mb-5 bg-dot-grid">
                 <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} className="size-full resize-none p-2 text-justify" />
             </div>
 

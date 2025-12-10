@@ -29,7 +29,7 @@ export default function Modal({ selectedBook, setSelectedBook }: IModalProps) {
                 <motion.div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50 " initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                     <motion.div className="bg-white p-6 rounded-xl shadow-lg w-[400px] relative" initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.8, opacity: 0 }} transition={{ duration: 0.3 }}>
                         {/* 이미지 */}
-                        <BookItem02 className="w-55 h-85 mx-auto" el={selectedBook} />
+                        <BookItem02 scale={false} className="w-55 h-85 mx-auto" el={selectedBook} />
 
                         {/* 제목 / 저자 */}
                         <div>

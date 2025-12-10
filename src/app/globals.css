@@ -85,3 +85,9 @@ textarea {
 .custom-scroll::-webkit-scrollbar-track {
     background-color: transparent; /* 트랙 색 */
 }
+
+/* 점 그리드 만들기 */
+.bg-dot-grid {
+    background-image: radial-gradient(#eee 1.5px, transparent 1.5px);
+    background-size: 10px 10px;
+}

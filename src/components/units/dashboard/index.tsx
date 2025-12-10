@@ -24,25 +24,23 @@ export default function Dashboard() {
     const { user } = useAuth();
 
     return (
-        <div className="w-full h-full space-y-12 py-8 px-2">
-            {/* <div className="w-[28%] pt-3 ">
-                <h3 className="text-2xl leading-snug font-semibold">책 속에서 발견한 생각들이, 나만의 길을 이어줍니다.</h3>
-
-                <p className="text-gray-500 text-sm mt-4 leading-relaxed">책 속에서 발견한 문장과 생각을 기록해보세요.</p>
-            </div> */}
+        <div className="w-full h-full  py-8 px-2">
             {/* 검색 */}
-            <section className="space-y-2">
-                <h2 className="text-2xl font-semibold tracking-tight">어떤 책을 찾고 계세요?</h2>
-                <p className="text-gray-500 text-sm">제목, 저자, 키워드로 원하는 책을 빠르게 찾아보세요.</p>
-
-                <div className="mt-4">
-                    <SearchBox value={input} onChange={setInput} onClick={handleSearch} placeholder="검색어를 입력해 보세요" />
+            <section className="flex items-start justify-center gap-5 flex-col md:flex-row mb-8">
+                <div>
+                    <h2 className="text-2xl font-semibold tracking-tight">어떤 책을 찾고 계세요?</h2>
+                    <p className="text-gray-500 text-sm">제목, 저자, 키워드로 원하는 책을 빠르게 찾아보세요.</p>
                 </div>
+
+                <SearchBox className="w-full" value={input} onChange={setInput} onClick={handleSearch} placeholder="검색어를 입력해 보세요" />
             </section>
 
             {/* 추천 도서 */}
-            <section>
-                <h3 className="text-xl font-semibold mb-4">오늘의 추천 도서</h3>
+            <section className="mb-8">
+                <div className="mb-3">
+                    <h3 className="text-xl font-semibold">오늘의 추천 도서</h3>
+                    <p className="text-gray-500 text-sm">오늘의 추천 도서를 확인해보세요.</p>
+                </div>
 
                 <Slide />
             </section>
@@ -50,10 +48,13 @@ export default function Dashboard() {
             {/* 월별 독서량 */}
             {user && (
                 <section>
-                    <h3 className="text-xl mb-4">
+                    <h3 className="text-xl mb-3">
                         <span className="font-semibold">{user?.displayName}</span>님의 독서 데이터
                     </h3>
-                    <BookChart />
+
+                    <div className="p-4 bg-white border border-gray-300 rounded-xl shadow-md">
+                        <BookChart />
+                    </div>
                 </section>
             )}
         </div>

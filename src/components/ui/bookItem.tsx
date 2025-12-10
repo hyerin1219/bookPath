@@ -18,8 +18,15 @@ function BookItem({ el, onClick }: BookItemProps) {
                 <p className="overflow-hidden text-ellipsis break-words" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
                     {el.title}
                 </p>
-                <p className="text-[#888] text-sm">
-                    {el.author} | {el.publisher}
+                <p
+                    className="text-[#888] text-sm overflow-hidden text-ellipsis"
+                    style={{
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                    }}
+                >
+                    {el.author && el.author} {el.author && el.publisher ? '|' : ''} {el.publisher && el.publisher}
                 </p>
             </div>
         </div>
