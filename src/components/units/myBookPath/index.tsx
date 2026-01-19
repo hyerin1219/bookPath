@@ -30,10 +30,6 @@ export default function MyBookPathPage() {
     const endIdx = startIdx + perPage;
     const currentBooks = myBooks.slice(startIdx, endIdx);
 
-    console.log('startIdx', startIdx);
-    console.log('perPage', perPage);
-    console.log('totalPages', totalPages);
-
     const handlePrev = () => {
         if (page > 1) setPage((prev) => prev - 1);
     };

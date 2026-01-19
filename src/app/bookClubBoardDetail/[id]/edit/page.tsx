@@ -12,7 +12,7 @@ export default async function BoardEditPage({ params }: EditPageProps) {
     const docRef = doc(firestore, 'bookClubBoard', params.id);
     const docSnap = await getDoc(docRef);
     const bookClubBoardData = docSnap.data() as IBookClubBoard;
-    console.log(docSnap);
+    // console.log(docSnap);
 
     return <BookClubWrite mode="edit" bookClubBoardData={bookClubBoardData} />;
 }

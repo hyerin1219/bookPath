@@ -28,6 +28,8 @@ export function useMyBooks() {
 
             setMyBooks(books);
             setLoading(false);
+
+            console.log('books', books);
         };
 
         fetchBooks();
