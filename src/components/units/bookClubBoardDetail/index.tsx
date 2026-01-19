@@ -4,13 +4,11 @@ import { useRouter } from 'next/navigation';
 import { getFirestore, doc } from 'firebase/firestore/lite';
 import { deleteDoc } from 'firebase/firestore/lite';
 
-import { IBookClubBoard } from '@/types/bookClubBoard';
-
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import DeleteModal from '@/components/ui/deleteModal';
 import Alert from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-
+import { IBookClubBoard } from '@/types/bookClubBoard';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 

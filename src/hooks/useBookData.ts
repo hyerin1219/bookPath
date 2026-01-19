@@ -43,16 +43,10 @@ export function useBookData(initialKeyword = '한국소설') {
         }
     };
 
-    // 키워드 변경 시 page 초기화 및 fetch
-    useEffect(() => {
-        setPage(1);
-        fetchBooks(keyword, 1);
-    }, [keyword]);
-
     // page 변경 시 fetch
     useEffect(() => {
         fetchBooks(keyword, page);
-    }, [page, keyword]);
+    }, [page, keyword, fetchBooks]);
 
     return { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks };
 }

@@ -1,23 +1,19 @@
 'use client';
 import { useEffect, useState } from 'react';
-
+import { useSearchParams } from 'next/navigation';
 import { IBookItems } from '@/types/bookItems';
-
 import { useBookData } from '@/hooks/useBookData';
 
 import { BookItem } from '@/components/ui/bookItem';
-import { Button } from '@/components/ui/button';
 import Modal from '@/components/ui/modal';
 import SearchBox from '@/components/ui/searchBox';
-import { useSearchParams } from 'next/navigation';
 import Pagination from '@/components/ui/pagination';
 
 export default function Search() {
     const searchParams = useSearchParams();
-    const initialKeyword = searchParams.get('keyword') || '';
-
-    const { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks } = useBookData('');
     const [input, setInput] = useState('');
+    const initialKeyword = searchParams.get('keyword') || '';
+    const { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks } = useBookData('');
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
 
     useEffect(() => {

@@ -1,8 +1,8 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { IBookClub } from '@/types/bookClub';
 import { IBookClubBoard } from '@/types/bookClubBoard';
-import { useRouter } from 'next/navigation';
 
 export default function BookClubDetail({ bookClubData, bookClubBoard }: { bookClubData: IBookClub; bookClubBoard: IBookClubBoard[] }) {
     const router = useRouter();

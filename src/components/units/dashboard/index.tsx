@@ -3,15 +3,15 @@ import { useState } from 'react';
 
 import SearchBox from '@/components/ui/searchBox';
 import { Slide } from '@/components/ui/slide';
-import { useBookData } from '@/hooks/useBookData';
-
-import { useAuth } from '@/hooks/useAuth';
 import { BookChart } from '@/components/ui/bookChart';
+import { useBookData } from '@/hooks/useBookData';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function Dashboard() {
+    const { user } = useAuth();
+    const router = useRouter();
     const { keyword, setKeyword } = useBookData('');
     const [input, setInput] = useState('');
-    const router = useRouter();
 
     const handleSearch = () => {
         const trimmed = input.trim();
@@ -20,8 +20,6 @@ export default function Dashboard() {
         router.push(`/search?keyword=${encodeURIComponent(trimmed)}`);
         setKeyword(trimmed);
     };
-
-    const { user } = useAuth();
 
     return (
         <div className="w-full h-full  py-8 px-2">
