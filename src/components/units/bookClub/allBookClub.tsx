@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { collection, getFirestore, doc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
-import { IBookClub } from '@/types/bookClub';
+import { IBookClub } from '@/types';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import JoinBookClubModal from '@/components/ui/joinBookClubModal';

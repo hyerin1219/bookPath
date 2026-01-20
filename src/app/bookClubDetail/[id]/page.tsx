@@ -2,8 +2,7 @@ import BookClubDetail from '@/components/units/bookClubDetail';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 
 import { doc, getDoc, getFirestore, collection, query, where, getDocs } from 'firebase/firestore';
-import { IBookClub } from '@/types/bookClub';
-import { IBookClubBoard } from '@/types/bookClubBoard';
+import { IBookClub, IBookClubBoard } from '@/types';
 
 interface IBookClubDetailProps {
     params: { id: string };

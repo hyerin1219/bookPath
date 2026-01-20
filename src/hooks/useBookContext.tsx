@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useState, useContext, useMemo } from 'react';
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 
 interface BookContextType {
     selectedBook: IBookItems | null;

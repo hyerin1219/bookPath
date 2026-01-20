@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore/lite';
 
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 
 import { BookItem02 } from '@/components/ui/bookItem02';
 import { firebaseApp } from '@/components/commons/libraries/firebase';

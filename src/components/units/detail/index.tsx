@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { getFirestore, doc } from 'firebase/firestore/lite';
 import { deleteDoc } from 'firebase/firestore/lite';
 
-import { IBookPath } from '@/types/bookPath';
+import { IBookPath } from '@/types';
 
 import { useAlert } from '@/hooks/useAlert';
 

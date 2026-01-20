@@ -29,7 +29,7 @@ export default function RootLayout({
         <html lang="ko">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased  md:h-screen h-full`}>
                 <Header />
-                <main className=" w-full h-[calc(100%-100px)]">
+                <main className=" w-full ">
                     <BookProvider>{children}</BookProvider>
                 </main>
 

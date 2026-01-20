@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 
 import { Button } from './button';
 import { useRouter } from 'next/navigation';

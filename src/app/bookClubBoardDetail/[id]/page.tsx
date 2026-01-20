@@ -3,7 +3,7 @@ import BookClubBoardDetail from '@/components/units/bookClubBoardDetail';
 
 import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
-import { IBookClubBoard } from '@/types/bookClubBoard';
+import { IBookClubBoard } from '@/types';
 
 interface IBookClubBoardDetailProps {
     params: { id: string };

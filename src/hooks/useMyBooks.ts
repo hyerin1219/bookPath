@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 
 export function useMyBooks() {
@@ -28,8 +28,6 @@ export function useMyBooks() {
 
             setMyBooks(books);
             setLoading(false);
-
-            console.log('books', books);
         };
 
         fetchBooks();

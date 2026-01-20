@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useRef, useState, useCallback } from 'react';
 import axios from 'axios';
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 
 export function useBookData(initialKeyword = '한국소설') {
     const [keyword, setKeyword] = useState(initialKeyword);

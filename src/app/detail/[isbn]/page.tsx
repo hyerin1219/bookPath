@@ -1,6 +1,6 @@
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import Detail from '@/components/units/detail';
-import { IBookPath } from '@/types/bookPath';
+import { IBookPath } from '@/types';
 import { doc, getDoc, getFirestore } from 'firebase/firestore';
 
 interface IDetailPageProps {

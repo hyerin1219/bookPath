@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { Button } from './button';
 
-import { IBookClub } from '@/types/bookClub';
+import { IBookClub } from '@/types';
 
 interface JoinBookClubModalProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;

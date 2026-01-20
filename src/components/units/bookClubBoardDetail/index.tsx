@@ -8,7 +8,7 @@ import { firebaseApp } from '@/components/commons/libraries/firebase';
 import DeleteModal from '@/components/ui/deleteModal';
 import Alert from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { IBookClubBoard } from '@/types/bookClubBoard';
+import { IBookClubBoard } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 

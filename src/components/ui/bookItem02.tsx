@@ -1,4 +1,4 @@
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 import Image from 'next/image';
 
 interface BookItem02Props {

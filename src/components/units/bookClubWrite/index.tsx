@@ -9,7 +9,7 @@ import Alert from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useAlert } from '@/hooks/useAlert';
 import { useAuth } from '@/hooks/useAuth';
-import { IBookClubBoard } from '@/types/bookClubBoard';
+import { IBookClubBoard } from '@/types';
 
 interface IBookClubWriteProps {
     mode: 'submit' | 'edit';

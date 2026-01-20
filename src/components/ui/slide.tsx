@@ -8,7 +8,7 @@ import { useBookData } from '@/hooks/useBookData';
 import { BookItem } from './bookItem';
 import Modal from './modal';
 
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 
 export function Slide() {
     const { bookData, loading } = useBookData('한국소설'); // 초기 키워드 "한국소설"

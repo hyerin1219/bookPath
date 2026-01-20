@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { IBookItems } from '@/types/bookItems';
+import { IBookItems } from '@/types';
 import { useBookData } from '@/hooks/useBookData';
 
 import { BookItem } from '@/components/ui/bookItem';

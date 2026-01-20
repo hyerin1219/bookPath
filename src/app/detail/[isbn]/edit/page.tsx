@@ -1,7 +1,7 @@
 import Write from '@/components/units/write';
 import { getFirestore, doc, getDoc } from 'firebase/firestore/lite';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
-import { IBookPath } from '@/types/bookPath';
+import { IBookPath } from '@/types';
 
 interface EditPageProps {
     params: { isbn: string };

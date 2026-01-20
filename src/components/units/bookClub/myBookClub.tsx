@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { collection, deleteDoc, doc, getDoc, getDocs, getFirestore, updateDoc } from 'firebase/firestore';
 
-import { IBookClub } from '@/types/bookClub';
+import { IBookClub } from '@/types';
 
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
