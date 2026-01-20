@@ -1,3 +1,4 @@
+// bookClub
 export interface IBookClub {
     id: string;
     clubName: string;
@@ -9,6 +10,7 @@ export interface IBookClub {
     }[];
 }
 
+// bookClub에 작성한 게시글
 export interface IBookClubBoard {
     clubId: string;
     content: string;
@@ -18,6 +20,7 @@ export interface IBookClubBoard {
     images: string[];
 }
 
+// naver 검색 api에서 받아온 책 정보
 export interface IBookItems {
     author: string; // 저자
     description: string; // 설명글
@@ -33,6 +36,7 @@ export interface IBookItems {
     publisher: string; // 출판사
 }
 
+// firebase에 등록한 독후감
 export interface IBookPath {
     uid: string;
     isbn: string;

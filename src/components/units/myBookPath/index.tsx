@@ -21,7 +21,7 @@ export default function MyBookPathPage() {
 
     // 페이지네이션 state
     const [page, setPage] = useState(1);
-    const perPage = 9;
+    const perPage = 10;
 
     const totalData = myBooks.length;
     const totalPages = Math.ceil(totalData / perPage);
@@ -55,7 +55,7 @@ export default function MyBookPathPage() {
                 <p className="text-gray-500 mt-10 text-center">등록된 책갈피가 없습니다.</p>
             ) : (
                 <div>
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 ">
                         {currentBooks.map((el) => (
                             <div key={el.isbn} className="flex flex-col items-center cursor-pointer" onClick={() => router.push(`/detail/${el.isbn}`)}>
                                 <BookItem02 scale={true} className="w-[150px] h-[213px]" el={el} />
