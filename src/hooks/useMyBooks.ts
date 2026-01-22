@@ -18,13 +18,18 @@ export function useMyBooks() {
             }
 
             const firestore = getFirestore(firebaseApp);
-            const q = query(collection(firestore, 'bookPath'), where('uid', '==', uid));
-            const snapshot = await getDocs(q);
+            // const q = query(collection(firestore, 'bookPath'), where('uid', '==', uid));
+            const ref = collection(firestore, 'users', uid, 'books');
+            const snapshot = await getDocs(ref);
+
+            // const books = snapshot.docs.map((doc) => ({
+            //     id: doc.id,
+            //     ...doc.data(),
+            // })) as any;
 
             const books = snapshot.docs.map((doc) => ({
-                id: doc.id,
                 ...doc.data(),
-            })) as any;
+            })) as IBookItems[];
 
             setMyBooks(books);
             setLoading(false);

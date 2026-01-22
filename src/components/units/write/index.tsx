@@ -55,13 +55,16 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
 
     // 등록
     const handleSubmit = async () => {
-        if (!book) return;
+        if (!book || !uid) return;
+
         if (!content.trim()) {
             triggerAlert('내용을 입력해주세요!');
             return;
         }
         try {
-            const docRef = doc(firestore, 'bookPath', book.isbn);
+            // users 컬렉션 -> 현재사용자 UID -> books 하위 컬렉션 -> ISBN 문서
+            const docRef = doc(firestore, 'users', uid, 'books', book.isbn);
+            // const docRef = doc(firestore, 'bookPath', book.isbn);
             await setDoc(docRef, {
                 uid,
                 isbn: book.isbn,
