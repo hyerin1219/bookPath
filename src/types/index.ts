@@ -18,6 +18,8 @@ export interface IBookClubBoard {
     title: string;
     nickname: string;
     images: string[];
+    userId: string;
+    date: string;
 }
 
 // naver 검색 api에서 받아온 책 정보

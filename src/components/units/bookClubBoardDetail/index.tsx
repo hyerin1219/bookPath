@@ -1,8 +1,8 @@
 'use client';
-import { useState } from 'react';
+
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getFirestore, doc } from 'firebase/firestore/lite';
-import { deleteDoc } from 'firebase/firestore/lite';
+import { getFirestore, doc, getDoc, deleteDoc } from 'firebase/firestore'; // 일반 firestore 권장
 
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import DeleteModal from '@/components/ui/deleteModal';
@@ -13,62 +13,90 @@ import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 
 interface IBookClubBoardDetailProps {
-    board: IBookClubBoard;
-    id: string;
+    id: string; // 이제 board를 prop으로 받지 않고 id만 받습니다.
 }
 
-export default function BookClubBoardDetail({ board, id }: IBookClubBoardDetailProps) {
+export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
-    const { showAlert, alertValue, triggerAlert } = useAlert();
-    const firestore = getFirestore(firebaseApp);
     const { uid } = useAuth();
+    const { showAlert, alertValue, triggerAlert } = useAlert();
 
-    // 삭제 모달
-    const handleOpenDeleteModal = () => {
-        setIsOpen(true);
-    };
+    const [board, setBoard] = useState<IBookClubBoard | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
 
-    // 삭제
+    const firestore = getFirestore(firebaseApp);
+
+    // 1. 컴포넌트 마운트 시 데이터 가져오기 (CSR)
+    useEffect(() => {
+        const fetchBoard = async () => {
+            try {
+                const docRef = doc(firestore, 'bookClubBoard', id);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    setBoard({
+                        id: docSnap.id,
+                        ...(docSnap.data() as Omit<IBookClubBoard, 'id'>),
+                    });
+                }
+            } catch (error) {
+                console.error('데이터 로딩 실패:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchBoard();
+    }, [id, firestore]);
+
+    // 2. 삭제 로직
     const handleDelete = async () => {
         try {
             const docRef = doc(firestore, 'bookClubBoard', id);
             await deleteDoc(docRef);
             setIsOpen(false);
             triggerAlert('삭제가 완료되었습니다!');
-            setTimeout(() => {
-                router.push(`/bookClub`);
-            }, 2000);
+            setTimeout(() => router.push(`/bookClub`), 2000);
         } catch (error) {
             console.error(error);
         }
     };
 
+    if (isLoading) return <div className="p-10">데이터를 불러오는 중입니다...</div>;
+    if (!board) return <div className="p-10">게시글을 찾을 수 없습니다.</div>;
+
+    const isMine = uid === board.userId;
+
+    console.log('uid', uid);
+    console.log('board.id', board.id);
+
     return (
         <div className="size-full">
             <div className="flex flex-col gap-5">
-                <div className="w-full flex items-center gap-2 ">
-                    <p>제목</p>
-                    <div className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl w-[90%]">{board.title}</div>
+                <div className="w-full flex items-center gap-2">
+                    <p className="shrink-0 w-10">제목</p>
+                    <div className="bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF]">{board.title}</div>
                 </div>
-                <div className="w-full flex  gap-2 ">
-                    <p>내용</p>
-                    <div className="min-h-30 bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl w-[90%]">{board.content}</div>
+                <div className="w-full flex gap-2">
+                    <p className="shrink-0 w-10">내용</p>
+                    <div className="min-h-[250px] bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF] text-justify overflow-y-auto custom-scroll whitespace-pre-wrap break-all">{board.content}</div>
                 </div>
-
-                {uid && (
-                    <div className="flex items-center justify-end gap-3 mt-5">
-                        <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
-                            수정
-                        </Button>
-                        <Button onClick={handleOpenDeleteModal} variant="close">
-                            삭제
-                        </Button>
-                    </div>
-                )}
+                <div className="flex items-center justify-end gap-3 mt-5">
+                    <Button onClick={() => router.push(`/bookClub`)}>책갈피 모임 가기</Button>
+                    {isMine && (
+                        <div className="flex items-center justify-end gap-3 ">
+                            <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
+                                수정
+                            </Button>
+                            <Button onClick={() => setIsOpen(true)} variant="close">
+                                삭제
+                            </Button>
+                        </div>
+                    )}
+                </div>
             </div>
 
-            {/* 알럿 */}
             {showAlert && <Alert alertValue={alertValue} />}
             {isOpen && <DeleteModal setIsOpen={setIsOpen} handleDelete={handleDelete} />}
         </div>

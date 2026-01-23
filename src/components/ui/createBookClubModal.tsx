@@ -52,6 +52,7 @@ export default function CreateBookClubModal({ setIsOpen }: BookClubProps) {
                 password,
                 createdAt: new Date().toLocaleDateString(),
                 members: [{ user: uid, nickname: user?.displayName || '익명' }],
+                membersId: [uid],
             });
 
             // 문서 ID를 필드에 저장

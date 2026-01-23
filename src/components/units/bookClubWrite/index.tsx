@@ -10,15 +10,18 @@ import { Button } from '@/components/ui/button';
 import { useAlert } from '@/hooks/useAlert';
 import { useAuth } from '@/hooks/useAuth';
 import { IBookClubBoard } from '@/types';
+import { getDoc } from 'firebase/firestore/lite';
 
 interface IBookClubWriteProps {
     mode: 'submit' | 'edit';
-    bookClubBoardData?: IBookClubBoard;
+    id?: string;
 }
 
-export default function BookClubWrite({ mode, bookClubBoardData }: IBookClubWriteProps) {
+export default function BookClubWrite({ mode, id }: IBookClubWriteProps) {
+    const firestore = getFirestore(firebaseApp);
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const [isLoading, setIsLoading] = useState(mode === 'edit'); // 수정 모드 시 로딩 상태 관리
 
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const { user } = useAuth();
@@ -26,15 +29,49 @@ export default function BookClubWrite({ mode, bookClubBoardData }: IBookClubWrit
     const searchParams = useSearchParams();
     const clubId = searchParams.get('clubId');
 
-    const firestore = getFirestore(firebaseApp);
-
-    // 수정 모드면 기존 데이터로 초기화
+    // [수정] 수정 모드일 때 서버 데이터 페칭
     useEffect(() => {
-        if (mode === 'edit' && bookClubBoardData) {
-            setTitle(bookClubBoardData.title);
-            setContent(bookClubBoardData.content);
+        if (mode === 'edit' && id) {
+            const fetchPost = async () => {
+                try {
+                    const docRef = doc(firestore, 'bookClubBoard', id);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data() as IBookClubBoard;
+                        setTitle(data.title);
+                        setContent(data.content);
+                    } else {
+                        triggerAlert('게시글을 찾을 수 없습니다.');
+                    }
+                } catch (error) {
+                    console.error('데이터 로딩 실패:', error);
+                } finally {
+                    setIsLoading(false);
+                }
+            };
+            fetchPost();
         }
-    }, [mode, bookClubBoardData]);
+    }, [mode, id, firestore]);
+
+    // 수정 로직 (id 직접 사용)
+    const handleUpdatePost = async () => {
+        if (!id) return;
+        try {
+            const docRef = doc(firestore, 'bookClubBoard', id);
+            await updateDoc(docRef, {
+                title,
+                content,
+                updatedAt: new Date().toLocaleDateString(), // 수정일자 관리 권장
+            });
+
+            triggerAlert('게시글이 수정되었습니다!');
+            setTimeout(() => {
+                router.push(`/bookClubBoardDetail/${id}`);
+            }, 2000);
+        } catch (error) {
+            if (error instanceof Error) alert(error.message);
+        }
+    };
 
     // 등록
     const handleSubmitPost = async () => {
@@ -44,32 +81,14 @@ export default function BookClubWrite({ mode, bookClubBoardData }: IBookClubWrit
                 content,
                 clubId,
                 nickname: user?.displayName || '익명',
+                userId: user?.uid,
+                date: new Date().toLocaleDateString(),
             });
             await updateDoc(docRef, { id: docRef.id });
 
             setTitle('');
             setContent('');
             triggerAlert('게시글이 등록되었습니다!');
-            setTimeout(() => {
-                router.push(`/bookClubBoardDetail/${docRef.id}`);
-            }, 2000);
-        } catch (error) {
-            if (error instanceof Error) alert(error.message);
-        }
-    };
-
-    // 수정
-    const handleUpdatePost = async () => {
-        if (!bookClubBoardData?.id) return;
-
-        try {
-            const docRef = doc(firestore, 'bookClubBoard', bookClubBoardData.id);
-            await updateDoc(docRef, {
-                title,
-                content,
-            });
-
-            triggerAlert('게시글이 수정되었습니다!');
             setTimeout(() => {
                 router.push(`/bookClubBoardDetail/${docRef.id}`);
             }, 2000);
@@ -93,12 +112,12 @@ export default function BookClubWrite({ mode, bookClubBoardData }: IBookClubWrit
             <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                 <div className="w-full flex items-center gap-2">
                     <p>제목</p>
-                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 rounded-xl w-[90%]" />
+                    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} className="bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF]" />
                 </div>
 
                 <div className="w-full flex gap-2">
                     <p>내용</p>
-                    <textarea spellCheck="false" rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[200px] bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 rounded-xl w-[90%] custom-scroll" />
+                    <textarea spellCheck="false" rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="min-h-[250px] bg-white shadow p-2 rounded-lg w-[90%] custom-scroll border border-[#A8E6CF] text-justify" />
                 </div>
 
                 <div className="text-right">
