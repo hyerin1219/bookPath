@@ -22,19 +22,17 @@ interface IHeartRatingProps {
 
 export default function HeartRating({ heartValue, setHeartValue, readOnly = false }: IHeartRatingProps) {
     return (
-        <div>
-            <StyledRating
-                name="customized-color"
-                value={heartValue}
-                precision={1}
-                getLabelText={(value: number) => `${value} Heart${value !== 1 ? 's' : ''}`}
-                icon={<FavoriteIcon fontSize="inherit" />}
-                emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-                onChange={(_, newValue) => {
-                    if (!readOnly && newValue !== null && setHeartValue) setHeartValue(newValue);
-                }}
-                readOnly={readOnly}
-            />
-        </div>
+        <StyledRating
+            name="customized-color"
+            value={heartValue}
+            precision={1}
+            getLabelText={(value: number) => `${value} Heart${value !== 1 ? 's' : ''}`}
+            icon={<FavoriteIcon fontSize="inherit" />}
+            emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+            onChange={(_, newValue) => {
+                if (!readOnly && newValue !== null && setHeartValue) setHeartValue(newValue);
+            }}
+            readOnly={readOnly}
+        />
     );
 }

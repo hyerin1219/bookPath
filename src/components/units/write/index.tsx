@@ -1,70 +1,78 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { doc, getFirestore, setDoc, updateDoc } from 'firebase/firestore/lite';
+import { doc, getFirestore, setDoc, updateDoc, getDoc } from 'firebase/firestore/lite';
 
-import { IBookItems } from '@/types';
-
-import { BookItem02 } from '@/components/ui/bookItem02';
+import { IBookItems, IBookPath } from '@/types'; // 타입 추가 확인 필요
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import Alert from '@/components/ui/alert';
+import { BookItem02 } from '@/components/ui/bookItem02';
+import HeartRating from '@/components/ui/rating';
 
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
-import HeartRating from '@/components/ui/rating';
 
 interface WriteProps {
     mode: 'submit' | 'edit';
-    book?: IBookItems;
+    isbn?: string; // 수정 모드를 위해 isbn 추가
+    book?: IBookItems; // 등록 모드를 위해 검색 결과 book 추가
 }
 
-export default function Write({ mode, book: initialBook }: WriteProps) {
-    const [book, setBook] = useState<IBookItems | null>(initialBook || null);
+export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
+    const [book, setBook] = useState<IBookPath | IBookItems | null>(initialBook || null);
     const [content, setContent] = useState('');
     const [heartValue, setHeartValue] = useState(0);
-    const { showAlert, alertValue, triggerAlert } = useAlert();
+    const [isRestoring, setIsRestoring] = useState(true); // 복구 중인지 확인하는 상태
     const { uid } = useAuth();
     const router = useRouter();
     const firestore = getFirestore(firebaseApp);
+    const { showAlert, alertValue, triggerAlert } = useAlert();
 
+    // 1. 인증 체크
     useEffect(() => {
         if (uid === null) {
             triggerAlert('로그인 후 이용해주세요!');
-            setTimeout(() => {
-                router.push('/');
-            }, 2000);
+            setTimeout(() => router.push('/'), 2000);
         }
-    }, [uid]);
-
+    }, [uid, router, triggerAlert]);
+    // 2. 등록 모드일 때 localStorage에서 데이터 꺼내오기
     useEffect(() => {
-        if (!book && mode === 'submit') {
-            const stored = localStorage.getItem('selectedBook');
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                setBook(parsed);
-                setContent(parsed.content || '');
+        if (mode === 'submit' && !book) {
+            const saved = localStorage.getItem('selectedBook');
+            if (saved) {
+                setBook(JSON.parse(saved));
             }
         }
+        setIsRestoring(false); // 데이터 체크가 끝나면 로딩 해제
+    }, [mode, book]);
 
-        if (book && mode === 'edit') {
-            setContent(book.content || '');
-            setHeartValue(book.rating || 0);
+    // 3. 수정 모드일 때 데이터 불러오기 및 폼 채우기
+    useEffect(() => {
+        if (mode === 'edit' && uid && isbn) {
+            const fetchEditData = async () => {
+                const docRef = doc(firestore, 'users', uid, 'books', isbn);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data() as IBookPath;
+                    setBook(data);
+                    setContent(data.content); // 기존 내용 세팅
+                    setHeartValue(data.rating); // 기존 별점 세팅
+                }
+            };
+            fetchEditData();
         }
-    }, [book, mode]);
+    }, [mode, uid, isbn, firestore]);
 
-    // 등록
+    // 등록 로직
     const handleSubmit = async () => {
         if (!book || !uid) return;
+        if (!content.trim()) return triggerAlert('내용을 입력해주세요!');
 
-        if (!content.trim()) {
-            triggerAlert('내용을 입력해주세요!');
-            return;
-        }
         try {
-            // users 컬렉션 -> 현재사용자 UID -> books 하위 컬렉션 -> ISBN 문서
             const docRef = doc(firestore, 'users', uid, 'books', book.isbn);
-            // const docRef = doc(firestore, 'bookPath', book.isbn);
             await setDoc(docRef, {
                 uid,
                 isbn: book.isbn,
@@ -74,35 +82,37 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
                 content,
                 date: new Date().toLocaleDateString(),
                 rating: heartValue,
-                description: book.description,
-                publisher: book.publisher,
+                description: book.description || '',
+                publisher: book.publisher || '',
             });
             router.push(`/detail/${book.isbn}`);
         } catch (error) {
-            if (error instanceof Error) alert(error.message);
+            console.error(error);
         }
     };
 
-    // 수정
+    // 수정 로직
     const handleEdit = async () => {
-        if (!book) return;
+        if (!book || !uid) return;
         try {
-            const docRef = doc(firestore, 'bookPath', book.isbn);
-            await updateDoc(docRef, { content, rating: heartValue });
+            const docRef = doc(firestore, 'users', uid, 'books', book.isbn);
+            await updateDoc(docRef, {
+                content,
+                rating: heartValue,
+                date: `${new Date().toLocaleDateString()} (수정됨)`,
+            });
+
             triggerAlert('수정이 완료되었습니다!');
-            setTimeout(() => {
-                router.push(`/detail/${book.isbn}`);
-            }, 2000);
+            setTimeout(() => router.push(`/detail/${book.isbn}`), 2000);
         } catch (error) {
-            if (error instanceof Error) alert(error.message);
+            console.error(error);
         }
     };
 
-    if (!book) return <p>책이 선택되지 않았습니다.</p>;
+    if (!book) return <p className="text-center py-20 text-gray-500">데이터를 불러오는 중입니다...</p>;
 
     return (
         <div className="size-full text-right">
-            {/* 책 정보 */}
             <div className="w-full flex justify-center items-center gap-10">
                 <BookItem02 scale={false} className="flex-shrink-0 w-[150px] h-[213px]" el={book} />
 
@@ -114,26 +124,24 @@ export default function Write({ mode, book: initialBook }: WriteProps) {
                         <span className="font-bold text-xl">Writer</span> <span className="border-b-2">{book.author}</span>
                     </div>
                     <div>
-                        <span className="font-bold text-xl">Date</span> <span className="border-b-2">{book?.date || new Date().toLocaleDateString()}</span>
+                        <span className="font-bold text-xl">Date</span>
+                        <span className="border-b-2">{(book as IBookPath).date || new Date().toLocaleDateString()}</span>
                     </div>
-                    <div className="inline-flex ">
+                    <div className="inline-flex items-center">
                         <span className="font-bold text-xl mr-1">Rating</span>
                         <HeartRating heartValue={heartValue} setHeartValue={setHeartValue} />
                     </div>
                 </div>
             </div>
 
-            {/* 입력 칸 */}
-
-            <div className="w-full h-130  mt-10 mb-5 bg-dot-grid">
-                <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} className="size-full resize-none p-2 text-justify" />
+            <div className="w-full h-130 mt-10 mb-5 bg-dot-grid  rounded-lg overflow-hidden ">
+                <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} placeholder="당신의 생각을 기록해보세요." className="size-full resize-none p-2 text-justify focus:outline-none bg-transparent leading-relaxed" />
             </div>
 
             <Button onClick={mode === 'submit' ? handleSubmit : handleEdit} variant="submit">
                 {mode === 'submit' ? '등록' : '수정'}
             </Button>
 
-            {/* 알럿 */}
             {showAlert && <Alert alertValue={alertValue} />}
         </div>
     );

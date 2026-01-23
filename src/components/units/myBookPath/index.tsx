@@ -8,10 +8,10 @@ import { useAlert } from '@/hooks/useAlert';
 import { useMyBooks } from '@/hooks/useMyBooks';
 
 import HeartRating from '@/components/ui/rating';
-import { BookItem02 } from '@/components/ui/bookItem02';
 import Alert from '@/components/ui/alert';
 import { BookChart } from '@/components/ui/bookChart';
 import Pagination from '@/components/ui/pagination';
+import { BookItem } from '@/components/ui/bookItem';
 
 export default function MyBookPathPage() {
     const { user, uid } = useAuth();
@@ -58,7 +58,7 @@ export default function MyBookPathPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 ">
                         {currentBooks.map((el) => (
                             <div key={el.isbn} className="flex flex-col items-center cursor-pointer" onClick={() => router.push(`/detail/${el.isbn}`)}>
-                                <BookItem02 scale={true} className="w-[150px] h-[213px]" el={el} />
+                                <BookItem el={el} />
                                 <HeartRating heartValue={el.rating} readOnly />
                             </div>
                         ))}
