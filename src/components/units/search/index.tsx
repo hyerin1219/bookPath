@@ -13,47 +13,42 @@ export default function Search() {
     const searchParams = useSearchParams();
     const [input, setInput] = useState('');
     const initialKeyword = searchParams.get('keyword') || '';
-    const { bookData, loading, keyword, setKeyword, page, setPage, totalData, fetchBooks } = useBookData('');
+
+    const { bookData, loading, keyword, setKeyword, page, setPage, totalData } = useBookData(initialKeyword);
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
 
+    // 1. 초기 URL 파라미터 동기화
     useEffect(() => {
         if (initialKeyword) {
-            setKeyword(initialKeyword);
             setInput(initialKeyword);
-            fetchBooks(initialKeyword, 1);
+            setKeyword(initialKeyword);
         }
-    }, [initialKeyword]);
+    }, [initialKeyword, setKeyword]);
 
+    // 2. 검색 버튼 클릭 시
     const handleSearch = () => {
         const trimmed = input.trim();
         if (!trimmed || trimmed === keyword) return;
-        setKeyword(trimmed);
+
+        setPage(1); // 새 검색어라면 페이지부터 1로 초기화
+        setKeyword(trimmed); // keyword가 변하면 useBookData의 useEffect가 알아서 fetch
     };
 
     const totalPages = Math.ceil(totalData / 10);
 
+    // 3. 페이지네이션 (함수 수동 호출 제거)
     const handlePrev = () => {
-        if (page > 1) {
-            const newPage = page - 1;
-            setPage(newPage);
-            fetchBooks(keyword, newPage);
-        }
+        if (page > 1) setPage(page - 1); // page 상태만 바꾸면 훅이 알아서
     };
 
     const handleNext = () => {
-        if (page < totalPages) {
-            const newPage = page + 1;
-            setPage(newPage);
-            fetchBooks(keyword, newPage);
-        }
+        if (page < totalPages) setPage(page + 1);
     };
 
     return (
         <div className="w-full py-8">
-            {/* 검색 입력창 */}
             <SearchBox value={input} onChange={setInput} onClick={handleSearch} placeholder="검색어를 입력해보세요." />
 
-            {/* 검색 결과 */}
             <div className="flex flex-wrap justify-center m-5 my-5 gap-8">
                 {loading
                     ? Array.from({ length: 10 }).map((_, idx) => (
@@ -67,10 +62,8 @@ export default function Search() {
                     : keyword && <p className="w-full text-center text-[#888] mt-4">검색 결과가 없습니다.</p>}
             </div>
 
-            {/* 페이지네이션 */}
             {totalPages > 1 && <Pagination onPrev={handlePrev} onNext={handleNext} totalPages={totalPages} page={page} />}
 
-            {/* 모달 */}
             <Modal selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
         </div>
     );
