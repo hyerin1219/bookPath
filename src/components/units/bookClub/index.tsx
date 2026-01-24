@@ -43,7 +43,7 @@ export default function BookClub() {
                     </Button>
                 </div>
 
-                {/* Tab Content: CSS의 hidden 속성을 사용하여 데이터 유지 */}
+                {/* Tab Content */}
                 <div className="mt-8">
                     {/* AllBookClub 탭 */}
                     <div className={activeTab === 'all' ? 'block' : 'hidden'}>

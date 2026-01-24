@@ -15,7 +15,7 @@ function BookItem({ el, onClick }: BookItemProps) {
             </div> */}
             <div className="relative w-full h-[255px] bg-[url('/images/img_book_ver1.png')] bg-contain bg-no-repeat">
                 <div className="absolute top-[7px] right-[7px] w-[135px] h-[185px] overflow-hidden">
-                    <Image src={el.image} alt={`${el.title} 표지`} loading="lazy" fill className="object-cover transition-transform duration-300 ease-in-out hover:scale-110" />
+                    <Image src={el.image} alt={`${el.title} 표지`} fill priority className="object-cover transition-transform duration-300 ease-in-out hover:scale-110" />
                 </div>
             </div>
 

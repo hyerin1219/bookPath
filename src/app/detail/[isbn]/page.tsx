@@ -1,9 +1,7 @@
 import Detail from '@/components/units/detail';
 
-interface IDetailPageProps {
-    params: { isbn: string };
-}
+export default async function DetailPage({ params }: { params: Promise<{ isbn: string }> }) {
+    const { isbn } = await params;
 
-export default function DetailPage({ params }: IDetailPageProps) {
-    return <Detail isbn={params.isbn} />;
+    return <Detail isbn={isbn} />;
 }

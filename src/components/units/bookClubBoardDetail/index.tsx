@@ -63,28 +63,38 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
         }
     };
 
-    if (isLoading) return <div className="p-10">데이터를 불러오는 중입니다...</div>;
-    if (!board) return <div className="p-10">게시글을 찾을 수 없습니다.</div>;
-
-    const isMine = uid === board.userId;
-
-    console.log('uid', uid);
-    console.log('board.id', board.id);
+    const isMine = uid === board?.userId;
 
     return (
         <div className="size-full">
             <div className="flex flex-col gap-5">
+                {/* 제목 영역 */}
                 <div className="w-full flex items-center gap-2">
                     <p className="shrink-0 w-10">제목</p>
-                    <div className="bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF]">{board.title}</div>
+                    <div className="bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF] min-h-[42px]">{isLoading ? <div className="h-6 w-1/2 bg-gray-100 animate-pulse rounded" /> : board?.title}</div>
                 </div>
+
+                {/* 내용 영역 */}
                 <div className="w-full flex gap-2">
                     <p className="shrink-0 w-10">내용</p>
-                    <div className="min-h-[250px] bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF] text-justify overflow-y-auto custom-scroll whitespace-pre-wrap break-all">{board.content}</div>
+                    <div className="min-h-[250px] bg-white shadow p-2 rounded-lg w-[90%] border border-[#A8E6CF] text-justify overflow-y-auto custom-scroll whitespace-pre-wrap break-all">
+                        {isLoading ? (
+                            <div className="space-y-3">
+                                <div className="h-4 bg-gray-100 w-full animate-pulse rounded" />
+                                <div className="h-4 bg-gray-100 w-4/5 animate-pulse rounded" />
+                                <div className="h-4 bg-gray-100 w-full animate-pulse rounded" />
+                            </div>
+                        ) : (
+                            board?.content || '게시글을 찾을 수 없습니다.'
+                        )}
+                    </div>
                 </div>
+
+                {/* 하단 버튼 영역 */}
                 <div className="flex items-center justify-end gap-3 mt-5">
                     <Button onClick={() => router.push(`/bookClub`)}>책갈피 모임 가기</Button>
-                    {isMine && (
+
+                    {!isLoading && isMine && (
                         <div className="flex items-center justify-end gap-3 ">
                             <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
                                 수정
@@ -97,6 +107,7 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
                 </div>
             </div>
 
+            {/* 알럿 및 모달 */}
             {showAlert && <Alert alertValue={alertValue} />}
             {isOpen && <DeleteModal setIsOpen={setIsOpen} handleDelete={handleDelete} />}
         </div>

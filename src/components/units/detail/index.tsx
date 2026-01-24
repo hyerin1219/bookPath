@@ -44,12 +44,8 @@ export default function DetailPage({ isbn }: { isbn: string }) {
         fetchBook();
     }, [uid, isbn, firestore]);
 
-    // 로딩 및 예외 처리
-    if (loading) return <div className="flex justify-center py-20 font-medium">데이터를 불러오는 중...</div>;
-    if (!book) return <div className="flex justify-center py-20 text-gray-500">책 정보를 찾을 수 없습니다.</div>;
-
     const handleEdit = () => {
-        router.push(`/detail/${book.isbn}/edit`);
+        router.push(`/detail/${book?.isbn}/edit`);
     };
 
     const handleDelete = async () => {
@@ -73,39 +69,52 @@ export default function DetailPage({ isbn }: { isbn: string }) {
 
     return (
         <div className="size-full">
+            {/* 상단 정보 영역 */}
             <div className="w-full flex justify-center items-center gap-10">
-                <BookItem02 className="flex-shrink-0 w-[150px] h-[213px]" scale={false} el={book} />
+                {loading ? <div className="w-[150px] h-[213px] bg-gray-200 animate-pulse rounded-lg" /> : book && <BookItem02 className="flex-shrink-0 w-[150px] h-[213px]" scale={false} el={book} />}
 
                 <div className="flex flex-col gap-2 ">
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Title</span>
-                        <span className="border-b-2 inline-block min-w-[150px]">{book.title}</span>
+                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.title}</span>
                     </div>
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Writer</span>
-                        <span className="border-b-2 inline-block min-w-[150px]">{book.author || '-'}</span>
+                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.author}</span>
                     </div>
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Date</span>
-                        <span className="border-b-2 inline-block min-w-[150px]">{book.date}</span>
+                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.date}</span>
                     </div>
+
                     <div className="inline-flex items-center">
                         <span className="font-bold text-xl mr-2">Rating</span>
-                        <HeartRating heartValue={book.rating} readOnly />
+                        {loading ? <div className="w-20 h-5 bg-gray-100 animate-pulse" /> : <HeartRating heartValue={book?.rating || 0} readOnly />}
                     </div>
                 </div>
             </div>
 
+            {/* 본문 영역 */}
             <div className="w-full h-130 bg-dot-grid mt-10 mb-5">
-                <div className="p-2 size-full overflow-y-auto text-justify whitespace-pre-wrap leading-relaxed">{book.content}</div>
+                <div className="p-2 size-full overflow-y-auto text-justify whitespace-pre-wrap leading-relaxed">
+                    {loading ? (
+                        <div className="space-y-2">
+                            <div className="h-4 bg-gray-100 w-full animate-pulse" />
+                            <div className="h-4 bg-gray-100 w-5/6 animate-pulse" />
+                        </div>
+                    ) : (
+                        book?.content || '내용이 없습니다.'
+                    )}
+                </div>
             </div>
 
+            {/* 하단 버튼 */}
             <div className="flex justify-end items-center gap-3">
                 <Button onClick={() => router.push('/myBookPath')}>나의 책갈피 가기</Button>
-                <Button onClick={handleEdit} variant="submit">
+                <Button onClick={handleEdit} variant="submit" disabled={loading}>
                     수정
                 </Button>
-                <Button onClick={() => setIsOpen(true)} variant="close">
+                <Button onClick={() => setIsOpen(true)} variant="close" disabled={loading}>
                     삭제
                 </Button>
             </div>

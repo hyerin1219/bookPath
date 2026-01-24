@@ -17,15 +17,21 @@ export default function BookClubDetail({ id }: { id: string }) {
     const [bookClubBoard, setBookClubBoard] = useState<IBookClubBoard[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    // 비동기 병렬 처리(Promise.all)
     useEffect(() => {
         const fetchAllData = async () => {
             try {
                 setIsLoading(true);
 
-                // 1. 모임 상세 데이터 가져오기
+                // 두 요청을 동시 시작 (병렬 처리)
                 const docRef = doc(firestore, 'bookClub', id);
-                const docSnap = await getDoc(docRef);
+                const boardColRef = collection(firestore, 'bookClubBoard');
+                const q = query(boardColRef, where('clubId', '==', id));
 
+                // Promise.all로 두 작업이 끝날 때까지 동시에 기다립니다.
+                const [docSnap, querySnapshot] = await Promise.all([getDoc(docRef), getDocs(q)]);
+
+                // 1. 상세 데이터 처리
                 if (docSnap.exists()) {
                     setBookClubData({
                         id: docSnap.id,
@@ -33,11 +39,7 @@ export default function BookClubDetail({ id }: { id: string }) {
                     } as IBookClub);
                 }
 
-                // 2. 해당 모임의 게시물 목록 가져오기
-                const boardColRef = collection(firestore, 'bookClubBoard');
-                const q = query(boardColRef, where('clubId', '==', id));
-                const querySnapshot = await getDocs(q);
-
+                // 2. 게시판 목록 처리
                 const boards = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...(doc.data() as Omit<IBookClubBoard, 'id'>),
@@ -59,10 +61,12 @@ export default function BookClubDetail({ id }: { id: string }) {
 
     return (
         <div>
+            {/* 책갈피 모임 이름 */}
             <div>
                 책갈피 모임 <span className="text-xl font-bold">{bookClubData.clubName}</span> 페이지
             </div>
 
+            {/* 책갈피 모임 멤버 */}
             <div className="flex justify-end gap-5 mt-5">
                 <div>{bookClubData.clubName} 멤버</div>
                 <div className="flex gap-2">
@@ -74,6 +78,7 @@ export default function BookClubDetail({ id }: { id: string }) {
                 </div>
             </div>
 
+            {/* 책갈피 게시글 */}
             <div className="mt-5 ">
                 {bookClubBoard.length > 0 ? (
                     bookClubBoard.map((el) => (
@@ -90,8 +95,11 @@ export default function BookClubDetail({ id }: { id: string }) {
                 )}
             </div>
 
+            {/* 버튼 */}
             <div className="flex items-center justify-end gap-5 mt-5 ">
-                <Button onClick={() => router.push(`/bookClubWrite?clubId=${id}`)}>글쓰기</Button>
+                <Button variant="submit" onClick={() => router.push(`/bookClubWrite?clubId=${id}`)}>
+                    글쓰기
+                </Button>
                 <Button onClick={() => router.push(`/bookClub`)}>책갈피 모임 가기</Button>
             </div>
         </div>

@@ -1,9 +1,7 @@
 import Write from '@/components/units/write';
 
-interface IEditPageProps {
-    params: { isbn: string };
-}
+export default async function EditPage({ params }: { params: Promise<{ isbn: string }> }) {
+    const { isbn } = await params;
 
-export default function EditPage({ params }: IEditPageProps) {
-    return <Write mode="edit" isbn={params.isbn} />;
+    return <Write mode="edit" isbn={isbn} />;
 }

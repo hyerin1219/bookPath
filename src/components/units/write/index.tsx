@@ -113,6 +113,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
 
     return (
         <div className="size-full text-right">
+            {/* 책 정보 영역 */}
             <div className="w-full flex justify-center items-center gap-10">
                 <BookItem02 scale={false} className="flex-shrink-0 w-[150px] h-[213px]" el={book} />
 
@@ -134,14 +135,17 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
                 </div>
             </div>
 
+            {/* 독후감 내용 영역 */}
             <div className="w-full h-130 mt-10 mb-5 bg-dot-grid  rounded-lg overflow-hidden ">
                 <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} placeholder="당신의 생각을 기록해보세요." className="size-full resize-none p-2 text-justify focus:outline-none bg-transparent leading-relaxed" />
             </div>
 
+            {/* 버튼 */}
             <Button onClick={mode === 'submit' ? handleSubmit : handleEdit} variant="submit">
                 {mode === 'submit' ? '등록' : '수정'}
             </Button>
 
+            {/* 알럿 */}
             {showAlert && <Alert alertValue={alertValue} />}
         </div>
     );

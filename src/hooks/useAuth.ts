@@ -16,12 +16,14 @@ export const useAuth = (): {
     const [user, setUser] = useState<User | null>(null);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isInitializing, setIsInitializing] = useState(true);
 
     const uid = user?.uid;
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
             setUser(firebaseUser ?? null);
+            setIsInitializing(false);
         });
 
         return () => unsubscribe();
