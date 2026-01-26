@@ -21,7 +21,7 @@ export default function JoinBookClubModal({ setIsOpen, selectedClub, handleJoin,
 
                 <div className="flex items-center gap-2">
                     <p>비밀번호</p>
-                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl" />
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className=" bg-white shadow p-2 rounded-lg  border border-[#A8E6CF]  whitespace-pre-wrap break-all" />
                 </div>
                 {/* 버튼 */}
                 <div className="flex items-center gap-5">
