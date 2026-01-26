@@ -13,6 +13,7 @@ import HeartRating from '@/components/ui/rating';
 
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
+import Refine from '@/components/ui/ai';
 
 interface WriteProps {
     mode: 'submit' | 'edit';
@@ -135,10 +136,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
                 </div>
             </div>
 
-            {/* 독후감 내용 영역 */}
-            <div className="w-full h-130 mt-10 mb-5 bg-dot-grid  rounded-lg overflow-hidden ">
-                <textarea spellCheck="false" value={content} onChange={(e) => setContent(e.target.value)} placeholder="당신의 생각을 기록해보세요." className="size-full resize-none p-2 text-justify focus:outline-none bg-transparent leading-relaxed" />
-            </div>
+            <Refine value={content} onChange={(e) => setContent(e.target.value)} />
 
             {/* 버튼 */}
             <Button onClick={mode === 'submit' ? handleSubmit : handleEdit} variant="submit">

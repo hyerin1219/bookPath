@@ -3,7 +3,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
-const buttonVariants = cva('inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm shadow-[2px_2px_6px_rgba(0,0,0,0.1)]', {
+const buttonVariants = cva('inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm shadow-[2px_2px_6px_rgba(0,0,0,0.1)] cursor-pointer', {
     variants: {
         variant: {
             default: 'bg-[#faf8da] ',

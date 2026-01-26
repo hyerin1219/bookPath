@@ -18,7 +18,7 @@ export default function Header() {
             <header className="flex items-center justify-between w-full h-[55px] p-5 py-2">
                 {/* 햄버거 버튼 */}
                 <div className="flex items-start gap-2">
-                    <button onClick={handleToggleMenu} className="p-2">
+                    <button onClick={handleToggleMenu} className="p-2 cursor-pointer">
                         <img src="/images/icon_ham.png" className="w-6" />
                     </button>
                     <h1 className="w-[50px] h-[30px] bg-[url('/images/icon_logo.png')] bg-contain bg-no-repeat">
@@ -31,12 +31,12 @@ export default function Header() {
                 {user ? (
                     <div>
                         <span>{user.displayName}님</span>
-                        <button onClick={handleLogout} className="text-xs ml-2">
+                        <button onClick={handleLogout} className="text-xs ml-2 cursor-pointer">
                             로그아웃
                         </button>
                     </div>
                 ) : (
-                    <button className="text-xs ml-2" onClick={handleOpenLoginModal}>
+                    <button className="text-xs ml-2 cursor-pointer" onClick={handleOpenLoginModal}>
                         로그인
                     </button>
                 )}
@@ -51,7 +51,7 @@ export default function Header() {
                             {/* 사이드 패널 */}
                             <motion.aside initial={{ x: -250 }} animate={{ x: 0 }} exit={{ x: -250 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }} className="fixed top-0 left-0 w-[250px] h-full bg-white shadow-xl p-5 py-2 z-500 flex flex-col gap-5">
                                 {/* 메뉴 내부 햄버거 버튼(닫기 버튼) */}
-                                <button onClick={handleToggleMenu} className="p-2">
+                                <button onClick={handleToggleMenu} className="p-2 cursor-pointer">
                                     <img src="/images/icon_ham.png" className="w-6" />
                                 </button>
 
