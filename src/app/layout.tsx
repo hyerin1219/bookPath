@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/commons/layout/header';
 import { BookProvider } from '@/hooks/useBookContext';
 import MenuLink from '@/components/ui/menuLink';
+import SkipMenu from '@/components/commons/layout/skipMenu';
 
 const geistSans = Geist({
     variable: '--font-geist-sans',
@@ -28,8 +29,9 @@ export default function RootLayout({
     return (
         <html lang="ko">
             <body className={`${geistSans.variable} ${geistMono.variable} antialiased  md:h-screen h-full`}>
+                <SkipMenu />
                 <Header />
-                <main className=" w-full ">
+                <main id="main" className=" w-full">
                     <BookProvider>{children}</BookProvider>
                 </main>
 
