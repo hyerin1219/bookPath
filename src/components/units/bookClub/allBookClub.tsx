@@ -69,7 +69,7 @@ export default function AllBookClub() {
                 {clubs.map((club) => {
                     const isJoined = club.members.some((member) => member.user === uid);
                     return (
-                        <li key={club.id} className="flex items-center justify-between w-full h-14 border-b last:border-b-0">
+                        <li key={club.id} className="flex items-center justify-between w-full h-14 ">
                             <span>{club.clubName}</span>
                             {isJoined ? (
                                 <Button onClick={() => router.push(`/bookClubDetail/${club.id}`)}>모임 가기</Button>

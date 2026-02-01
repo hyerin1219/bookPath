@@ -71,15 +71,15 @@ export default function CreateBookClubModal({ setIsOpen }: BookClubProps) {
             <motion.form onSubmit={handleSubmit} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ type: 'spring', stiffness: 200, damping: 15 }} className="relative flex flex-col items-center gap-5 bg-white p-10 py-5 rounded-xl shadow-[2px_2px_6px_rgba(0,0,0,0.1)]">
                 <div className="text-xl">책갈피 모임 만들기</div>
 
-                <div className="flex flex-col gap-3 ">
+                <div className="flex items-center flex-col gap-3 ">
                     <div className="flex items-center gap-2">
                         <p>모임이름</p>
-                        <input value={clubName} onChange={(e) => setClubName(e.target.value)} type="text" className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl" />
+                        <input value={clubName} onChange={(e) => setClubName(e.target.value)} type="text" className="bg-white shadow p-2 rounded-lg  border border-[#A8E6CF]  whitespace-pre-wrap break-all" />
                     </div>
 
                     <div className="flex items-center gap-2">
                         <p>비밀번호</p>
-                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-[#eee] shadow-[inset_2px_2px_0px_rgba(0,0,0,0.3)] p-2 py-1 rounded-xl" />
+                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="bg-white shadow p-2 rounded-lg  border border-[#A8E6CF]  whitespace-pre-wrap break-all" />
                     </div>
                 </div>
                 {/* 버튼 */}

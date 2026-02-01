@@ -136,6 +136,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
                 </div>
             </div>
 
+            {/* 문장 교정 */}
             <Refine value={content} onChange={(e) => setContent(e.target.value)} />
 
             {/* 버튼 */}
