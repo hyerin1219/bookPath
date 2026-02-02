@@ -83,10 +83,10 @@ export default function BookClubDetail({ id }: { id: string }) {
                 {bookClubBoard.length > 0 ? (
                     bookClubBoard.map((el) => (
                         <div key={el.id} onClick={() => router.push(`/bookClubBoardDetail/${el.id}`)} className="flex justify-between items-center p-3 px-5 mb-3 bg-white rounded-xl shadow cursor-pointer  transition-all hover:bg-gray-50">
-                            <div>{el.title}</div>
-                            <div>
-                                <div className="text-sm">{el.nickname}</div>
-                                <span className="text-gray-500 text-sm">{el.date}</span>
+                            <div className="truncate  w-[70%]">{el.title}</div>
+                            <div className=" w-[90px]">
+                                <div className="text-sm ">{el.nickname}</div>
+                                <span className="inline-block text-gray-500 text-sm">{el.date}</span>
                             </div>
                         </div>
                     ))

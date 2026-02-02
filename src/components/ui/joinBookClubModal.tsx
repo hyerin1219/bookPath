@@ -25,7 +25,14 @@ export default function JoinBookClubModal({ setIsOpen, selectedClub, handleJoin,
                 </div>
                 {/* 버튼 */}
                 <div className="flex items-center gap-5">
-                    <Button variant="submit" onClick={() => handleJoin(password)} className="">
+                    <Button
+                        variant="submit"
+                        onClick={() => {
+                            handleJoin(password);
+                            setPassword('');
+                        }}
+                        className=""
+                    >
                         확인
                     </Button>
                     <Button

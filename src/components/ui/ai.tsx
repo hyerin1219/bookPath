@@ -57,8 +57,8 @@ export default function Refine({ value, onChange, onApply }: IRefineProps) {
                 {isLoading ? '문장 교정 중..' : '문장 교정하기'}
             </Button>
 
-            <div className="w-full h-130 bg-dot-grid rounded-lg overflow-hidden border border-gray-100 shadow-inner relative">
-                <textarea className="size-full resize-none p-4 text-justify focus:outline-none bg-transparent leading-relaxed" value={value} onChange={onChange} placeholder="당신의 생각을 기록해보세요." />
+            <div className="w-full h-130 bg-dot-grid rounded-lg overflow-hidden  relative">
+                <textarea className="p-2 size-full overflow-y-auto text-justify whitespace-pre-wrap leading-relaxed" value={value} onChange={onChange} placeholder="당신의 생각을 기록해보세요." />
             </div>
 
             {/* AI 결과창 */}

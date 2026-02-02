@@ -61,7 +61,7 @@ export default function BookClubWrite({ mode, id }: IBookClubWriteProps) {
             await updateDoc(docRef, {
                 title,
                 content,
-                updatedAt: new Date().toLocaleDateString(), // 수정일자 관리 권장
+                updatedAt: new Date().toLocaleDateString(),
             });
 
             triggerAlert('게시글이 수정되었습니다!');

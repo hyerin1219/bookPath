@@ -13,7 +13,7 @@ interface IChartData {
 }
 
 export function BookChart() {
-    const [chartData, setChartData] = useState<IChartData[]>([]);
+    // const [chartData, setChartData] = useState<IChartData[]>([]);
     const [allData, setAllData] = useState<IChartData[]>([]);
     const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
     const { uid } = useAuth();
@@ -65,11 +65,13 @@ export function BookChart() {
         return allData.filter((d) => d.year === selectedYear);
     }, [allData, selectedYear]);
 
+    console.log('filteredData', filteredData);
+
     return (
         <div>
             {/* 상단 컨트롤 바 */}
             <div className="flex items-center justify-between mb-6 px-4">
-                <h3 className="text-lg font-bold text-slate-800">독서 기록 통계</h3>
+                <h3 className="text-lg text-slate-800">독서 기록 통계</h3>
                 <select value={selectedYear} onChange={(e) => setSelectedYear(e.target.value)} className="bg-slate-50 border border-slate-200 text-slate-600 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none">
                     {availableYears.map((year) => (
                         <option key={year} value={year}>

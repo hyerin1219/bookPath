@@ -22,7 +22,7 @@ export default function Dashboard() {
     };
 
     return (
-        <div className="w-full h-full  py-8 px-2">
+        <div className="w-full h-full  py-7 px-2">
             {/* 검색 */}
             <section className="flex items-start justify-center gap-5 flex-col md:flex-row mb-8">
                 <div>

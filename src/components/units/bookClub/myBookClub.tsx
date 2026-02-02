@@ -17,13 +17,14 @@ import { motion } from 'framer-motion';
 
 export default function MyBookClub() {
     const { uid } = useAuth();
-    const [clubs, setClubs] = useState<IBookClub[]>([]);
-    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
-    const firestore = getFirestore(firebaseApp);
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
-    const { showAlert, alertValue, triggerAlert } = useAlert();
+    const firestore = getFirestore(firebaseApp);
 
+    const [isOpen, setIsOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
+
+    const [clubs, setClubs] = useState<IBookClub[]>([]);
+    const { showAlert, alertValue, triggerAlert } = useAlert();
     const [selectedClubId, setSelectedClubId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -45,11 +46,10 @@ export default function MyBookClub() {
                 }));
 
                 setClubs(data);
-                console.log('data', data);
             } catch (error) {
                 console.error('데이터 로딩 오류:', error);
             } finally {
-                setIsLoading(false); // 성공하든 실패하든 로딩 해제
+                setIsLoading(false); // 로딩 해제
             }
         };
 
@@ -80,7 +80,7 @@ export default function MyBookClub() {
             // Firestore 업데이트 (두 필드 모두 갱신)
             await updateDoc(clubRef, {
                 members: updatedMembers,
-                memberIds: updatedMemberIds,
+                membersId: updatedMemberIds,
             });
 
             // 클라이언트 상태 즉시 반영 (낙관적 업데이트)
@@ -116,7 +116,7 @@ export default function MyBookClub() {
         <div>
             <ul className="flex flex-col gap-2 mt-5">
                 {clubs.map((club) => (
-                    <li key={club.id} className="flex items-center justify-between w-full h-14 border-b last:border-b-0">
+                    <li key={club.id} className="flex items-center justify-between w-full h-14 ">
                         <p>{club.clubName}</p>
 
                         <div className="flex gap-2">

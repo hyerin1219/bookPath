@@ -27,11 +27,11 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
 
     const firestore = getFirestore(firebaseApp);
 
-    // 1. 컴포넌트 마운트 시 데이터 가져오기 (CSR)
+    const docRef = doc(firestore, 'bookClubBoard', id);
+
     useEffect(() => {
         const fetchBoard = async () => {
             try {
-                const docRef = doc(firestore, 'bookClubBoard', id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
@@ -53,7 +53,6 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
     // 2. 삭제 로직
     const handleDelete = async () => {
         try {
-            const docRef = doc(firestore, 'bookClubBoard', id);
             await deleteDoc(docRef);
             setIsOpen(false);
             triggerAlert('삭제가 완료되었습니다!');
@@ -92,7 +91,7 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
 
                 {/* 하단 버튼 영역 */}
                 <div className="flex items-center justify-end gap-3 mt-5">
-                    <Button onClick={() => router.push(`/bookClub`)}>책갈피 모임 가기</Button>
+                    <Button onClick={() => router.push(`/bookClubDetail/${board?.clubId}`)}>나의 책갈피 모임 가기</Button>
 
                     {!isLoading && isMine && (
                         <div className="flex items-center justify-end gap-3 ">

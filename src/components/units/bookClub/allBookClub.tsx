@@ -49,7 +49,11 @@ export default function AllBookClub() {
             const newMember = { user: uid, nickname: user?.displayName || '익명' };
 
             // Firestore 업데이트
-            await updateDoc(docRef, { members: arrayUnion(newMember) });
+            // await updateDoc(docRef, { members: arrayUnion(newMember) });
+            await updateDoc(docRef, {
+                membersId: arrayUnion(uid),
+                members: arrayUnion({ user: uid, role: 'member' }),
+            });
 
             // 상태 업데이트
             setClubs(clubs.map((c) => (c.id === club.id ? { ...c, members: [...c.members, newMember] } : c)));
