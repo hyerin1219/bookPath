@@ -17,7 +17,6 @@ export default function Search() {
     const { bookData, loading, keyword, setKeyword, page, setPage, totalData } = useBookData(initialKeyword);
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
 
-    // 1. 초기 URL 파라미터 동기화
     useEffect(() => {
         if (initialKeyword) {
             setInput(initialKeyword);
@@ -25,7 +24,7 @@ export default function Search() {
         }
     }, [initialKeyword, setKeyword]);
 
-    // 2. 검색 버튼 클릭 시
+    // 검색 로직
     const handleSearch = () => {
         const trimmed = input.trim();
         if (!trimmed || trimmed === keyword) return;
@@ -36,7 +35,7 @@ export default function Search() {
 
     const totalPages = Math.ceil(totalData / 10);
 
-    // 3. 페이지네이션 (함수 수동 호출 제거)
+    //  페이지네이션
     const handlePrev = () => {
         if (page > 1) setPage(page - 1); // page 상태만 바꾸면 훅이 알아서
     };

@@ -31,7 +31,6 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
     const firestore = getFirestore(firebaseApp);
     const { showAlert, alertValue, triggerAlert } = useAlert();
 
-    // 1. 인증 체크
     useEffect(() => {
         if (uid === null) {
             triggerAlert('로그인 후 이용해주세요!');
@@ -39,7 +38,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
         }
     }, [uid, router, triggerAlert]);
 
-    // 2. 등록 모드일 때 localStorage에서 데이터 꺼내오기
+    // 등록 모드일 때 localStorage에서 데이터 꺼내오기
     useEffect(() => {
         if (mode === 'submit' && !book) {
             const saved = localStorage.getItem('selectedBook');
@@ -50,7 +49,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
         setIsRestoring(false); // 데이터 체크가 끝나면 로딩 해제
     }, [mode, book]);
 
-    // 3. 수정 모드일 때 데이터 불러오기 및 폼 채우기
+    // 수정 모드일 때 데이터 불러오기 및 폼 채우기
     useEffect(() => {
         if (mode === 'edit' && uid && isbn) {
             const fetchEditData = async () => {
@@ -107,7 +106,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
             await updateDoc(docRef, {
                 content,
                 rating: heartValue,
-                date: `${new Date().toLocaleDateString()} (수정됨)`,
+                date: `${new Date().toLocaleDateString()}`,
             });
 
             triggerAlert('수정이 완료되었습니다!');

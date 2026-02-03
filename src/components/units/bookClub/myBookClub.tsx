@@ -72,18 +72,18 @@ export default function MyBookClub() {
 
             const clubData = clubSnap.data() as IBookClub & { memberIds: string[] };
 
-            // 1. members 객체 배열 필터링
+            // members 객체 배열
             const updatedMembers = clubData.members.filter((member) => member.user !== uid);
-            // 2. 쿼리용 memberIds 문자열 배열 필터링
+            // memberIds  배열
             const updatedMemberIds = clubData.memberIds?.filter((id) => id !== uid) || [];
 
-            // Firestore 업데이트 (두 필드 모두 갱신)
+            // Firestore 업데이트
             await updateDoc(clubRef, {
                 members: updatedMembers,
                 membersId: updatedMemberIds,
             });
 
-            // 클라이언트 상태 즉시 반영 (낙관적 업데이트)
+            // 클라이언트 상태 즉시 반영
             setClubs((prev) => prev.filter((club) => club.id !== selectedClubId));
 
             triggerAlert('모임 탈퇴가 완료되었습니다.');

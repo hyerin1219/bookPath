@@ -13,9 +13,9 @@ import { useAlert } from '@/hooks/useAlert';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function BookClub() {
+    const router = useRouter();
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const { uid } = useAuth();
-    const router = useRouter();
     const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState<'all' | 'my'>('all');
 

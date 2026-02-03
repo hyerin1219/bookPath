@@ -29,7 +29,7 @@ export default function BookClubWrite({ mode, id }: IBookClubWriteProps) {
     const searchParams = useSearchParams();
     const clubId = searchParams.get('clubId');
 
-    // [수정] 수정 모드일 때 서버 데이터 페칭
+    // 수정 모드 일때
     useEffect(() => {
         if (mode === 'edit' && id) {
             const fetchPost = async () => {

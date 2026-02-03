@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
 
 interface IBookClubBoardDetailProps {
-    id: string; // 이제 board를 prop으로 받지 않고 id만 받습니다.
+    id: string;
 }
 
 export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
@@ -50,7 +50,7 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
         fetchBoard();
     }, [id, firestore]);
 
-    // 2. 삭제 로직
+    // 삭제 로직
     const handleDelete = async () => {
         try {
             await deleteDoc(docRef);

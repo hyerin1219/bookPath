@@ -44,10 +44,12 @@ export default function DetailPage({ isbn }: { isbn: string }) {
         fetchBook();
     }, [uid, isbn, firestore]);
 
+    // 수정하기
     const handleEdit = () => {
         router.push(`/detail/${book?.isbn}/edit`);
     };
 
+    // 독후감 삭제하기
     const handleDelete = async () => {
         if (!uid) return;
         try {
@@ -76,15 +78,15 @@ export default function DetailPage({ isbn }: { isbn: string }) {
                 <div className="flex flex-col gap-2 ">
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Title</span>
-                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.title}</span>
+                        <span className="border-b-2 inline-block ">{book?.title}</span>
                     </div>
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Writer</span>
-                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.author}</span>
+                        <span className="border-b-2 inline-block ">{book?.author}</span>
                     </div>
                     <div className="text-lg">
                         <span className="font-bold text-xl mr-2">Date</span>
-                        <span className="border-b-2 inline-block ">{loading ? '로드 중...' : book?.date}</span>
+                        <span className="border-b-2 inline-block ">{book?.date}</span>
                     </div>
 
                     <div className="inline-flex items-center">

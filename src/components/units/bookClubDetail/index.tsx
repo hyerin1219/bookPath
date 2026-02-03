@@ -12,26 +12,21 @@ export default function BookClubDetail({ id }: { id: string }) {
     const router = useRouter();
     const firestore = getFirestore(firebaseApp);
 
-    // 데이터와 로딩 상태 관리
     const [bookClubData, setBookClubData] = useState<IBookClub | null>(null);
     const [bookClubBoard, setBookClubBoard] = useState<IBookClubBoard[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    // 비동기 병렬 처리(Promise.all)
     useEffect(() => {
         const fetchAllData = async () => {
             try {
                 setIsLoading(true);
 
-                // 두 요청을 동시 시작 (병렬 처리)
                 const docRef = doc(firestore, 'bookClub', id);
                 const boardColRef = collection(firestore, 'bookClubBoard');
                 const q = query(boardColRef, where('clubId', '==', id));
 
-                // Promise.all로 두 작업이 끝날 때까지 동시에 기다립니다.
                 const [docSnap, querySnapshot] = await Promise.all([getDoc(docRef), getDocs(q)]);
 
-                // 1. 상세 데이터 처리
                 if (docSnap.exists()) {
                     setBookClubData({
                         id: docSnap.id,
@@ -39,7 +34,7 @@ export default function BookClubDetail({ id }: { id: string }) {
                     } as IBookClub);
                 }
 
-                // 2. 게시판 목록 처리
+                // 게시판 목록
                 const boards = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
                     ...(doc.data() as Omit<IBookClubBoard, 'id'>),

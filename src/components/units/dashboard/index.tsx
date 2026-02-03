@@ -51,6 +51,7 @@ export default function Dashboard() {
                         <span className="font-semibold">{user?.displayName}</span>님의 독서 데이터
                     </h3>
 
+                    {/* 독서량 차트 */}
                     <div className="p-4 bg-white border border-gray-300 rounded-xl shadow-md">
                         <BookChart />
                     </div>

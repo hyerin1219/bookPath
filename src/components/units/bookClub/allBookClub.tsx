@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { collection, getFirestore, doc, updateDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
 import { IBookClub } from '@/types';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
@@ -9,19 +10,18 @@ import JoinBookClubModal from '@/components/ui/joinBookClubModal';
 import Alert from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
-import { useRouter } from 'next/navigation';
 
 export default function AllBookClub() {
+    const firestore = getFirestore(firebaseApp);
+    const router = useRouter();
     const { uid, user } = useAuth();
-    const [clubs, setClubs] = useState<IBookClub[]>([]);
-    const [password, setPassword] = useState('');
+    const { showAlert, alertValue, triggerAlert } = useAlert();
     const [isOpen, setIsOpen] = useState(false);
+    const [password, setPassword] = useState('');
+    const [clubs, setClubs] = useState<IBookClub[]>([]);
     const [selectedClub, setSelectedClub] = useState<IBookClub | null>(null);
 
-    const firestore = getFirestore(firebaseApp);
-    const { showAlert, alertValue, triggerAlert } = useAlert();
-    const router = useRouter();
-
+    // 등록 된 책갈피 모임
     useEffect(() => {
         const colRef = collection(firestore, 'bookClub');
         const unsubscribe = onSnapshot(colRef, (snapshot) => {
@@ -35,21 +35,22 @@ export default function AllBookClub() {
         return () => unsubscribe();
     }, [firestore]);
 
+    // 책갈피 모임 가입
     const handleJoin = async (club: IBookClub, passwordInput: string) => {
-        if (!uid) return triggerAlert('로그인이 필요합니다!');
+        if (!uid) return triggerAlert('로그인이 필요합니다.');
 
-        // 이미 가입 여부 체크
+        // 가입 여부 체크
         const isJoined = club.members.some((member) => member.user === uid);
-        if (isJoined) return triggerAlert('이미 가입한 모임입니다!');
+        if (isJoined) return triggerAlert('이미 가입한 모임입니다.');
 
-        if (passwordInput !== club.password) return triggerAlert('비밀번호가 일치하지 않습니다!');
+        // 비밀번호 체크
+        if (passwordInput !== club.password) return triggerAlert('비밀번호가 일치하지 않습니다.');
 
         try {
             const docRef = doc(firestore, 'bookClub', club.id);
             const newMember = { user: uid, nickname: user?.displayName || '익명' };
 
             // Firestore 업데이트
-            // await updateDoc(docRef, { members: arrayUnion(newMember) });
             await updateDoc(docRef, {
                 membersId: arrayUnion(uid),
                 members: arrayUnion({ user: uid, role: 'member' }),
@@ -61,7 +62,7 @@ export default function AllBookClub() {
             triggerAlert('가입 완료!');
             setIsOpen(false);
         } catch (error) {
-            if (error instanceof Error) alert(error.message);
+            if (error instanceof Error) console.log(error.message);
         }
     };
 

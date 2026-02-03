@@ -14,8 +14,8 @@ import Pagination from '@/components/ui/pagination';
 import { BookItem } from '@/components/ui/bookItem';
 
 export default function MyBookPathPage() {
-    const { user, uid } = useAuth();
     const router = useRouter();
+    const { user, uid } = useAuth();
     const { showAlert, alertValue, triggerAlert } = useAlert();
     const { myBooks } = useMyBooks();
 
