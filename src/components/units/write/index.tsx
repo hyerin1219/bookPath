@@ -38,6 +38,7 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
             setTimeout(() => router.push('/'), 2000);
         }
     }, [uid, router, triggerAlert]);
+
     // 2. 등록 모드일 때 localStorage에서 데이터 꺼내오기
     useEffect(() => {
         if (mode === 'submit' && !book) {
@@ -70,10 +71,16 @@ export default function Write({ mode, isbn, book: initialBook }: WriteProps) {
     // 등록 로직
     const handleSubmit = async () => {
         if (!book || !uid) return;
-        if (!content.trim()) return triggerAlert('내용을 입력해주세요!');
 
         try {
             const docRef = doc(firestore, 'users', uid, 'books', book.isbn);
+            if (!content.trim()) return triggerAlert('내용을 입력해주세요!');
+            const docSnap = await getDoc(docRef);
+
+            if (docSnap.exists()) {
+                // 이미 데이터가 있다면 알럿
+                return triggerAlert('이미 서재에 등록된 책입니다!');
+            }
             await setDoc(docRef, {
                 uid,
                 isbn: book.isbn,
