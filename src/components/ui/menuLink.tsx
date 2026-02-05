@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 
 const MotionLink = motion(Link);
 
@@ -23,7 +24,7 @@ const MenuLink = ({ onSelect }: IMenuLinkProps) => {
             {Menu.map((el) => (
                 <MotionLink key={el.icon} href={el.src} onClick={onSelect} className="flex items-center gap-3 text-gray-700 font-medium group" transition={{ type: 'spring', stiffness: 300, damping: 15 }}>
                     <span className="rounded-xl bg-[#eee] w-9 h-9 flex items-center justify-center group-hover:bg-yellow-100 transition">
-                        <img className="w-5" src={`/images/icon_${el.icon}.png`} />
+                        <Image alt={`${el.menu} 아이콘`} width={20} height={20} className="" src={`/images/icon_${el.icon}.png`} />
                     </span>
                     <span>{el.menu}</span>
                 </MotionLink>

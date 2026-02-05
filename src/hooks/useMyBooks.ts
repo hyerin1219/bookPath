@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore/lite';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { IBookItems } from '@/types';
 import { useAuth } from '@/hooks/useAuth';

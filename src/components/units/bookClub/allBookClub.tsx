@@ -10,6 +10,7 @@ import JoinBookClubModal from '@/components/ui/joinBookClubModal';
 import Alert from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
+import Link from 'next/link';
 
 export default function AllBookClub() {
     const firestore = getFirestore(firebaseApp);
@@ -77,7 +78,9 @@ export default function AllBookClub() {
                         <li key={club.id} className="flex items-center justify-between w-full h-14 ">
                             <span>{club.clubName}</span>
                             {isJoined ? (
-                                <Button onClick={() => router.push(`/bookClubDetail/${club.id}`)}>모임 가기</Button>
+                                <Link className="inline-flex items-center justify-center h-9 px-4 py-2  whitespace-nowrap rounded-md text-sm shadow-[2px_2px_6px_rgba(0,0,0,0.1)] cursor-pointer bg-[#faf8da]" href={`/bookClubDetail/${club.id}`}>
+                                    모임 가기
+                                </Link>
                             ) : (
                                 <Button
                                     variant="submit"

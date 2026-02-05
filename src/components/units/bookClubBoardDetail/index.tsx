@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getFirestore, doc, getDoc, deleteDoc } from 'firebase/firestore'; // 일반 firestore 권장
+import { getFirestore, doc, getDoc, deleteDoc } from 'firebase/firestore';
 
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import DeleteModal from '@/components/ui/deleteModal';

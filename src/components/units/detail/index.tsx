@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getFirestore, doc, deleteDoc, getDoc } from 'firebase/firestore/lite';
+import { getFirestore, doc, deleteDoc, getDoc } from 'firebase/firestore';
 
 import { IBookPath } from '@/types';
 import { useAuth } from '@/hooks/useAuth';

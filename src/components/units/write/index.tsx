@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { doc, getFirestore, setDoc, updateDoc, getDoc } from 'firebase/firestore/lite';
+import { doc, getFirestore, setDoc, updateDoc, getDoc } from 'firebase/firestore';
 
 import { IBookItems, IBookPath } from '@/types'; // 타입 추가 확인 필요
 import { firebaseApp } from '@/components/commons/libraries/firebase';

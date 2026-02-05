@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { collection, getFirestore, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { collection, getFirestore, addDoc, updateDoc, doc, getDoc } from 'firebase/firestore';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 
 import Alert from '@/components/ui/alert';
@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { useAlert } from '@/hooks/useAlert';
 import { useAuth } from '@/hooks/useAuth';
 import { IBookClubBoard } from '@/types';
-import { getDoc } from 'firebase/firestore/lite';
 
 interface IBookClubWriteProps {
     mode: 'submit' | 'edit';
