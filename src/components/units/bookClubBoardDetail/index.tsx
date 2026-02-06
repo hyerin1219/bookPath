@@ -8,6 +8,7 @@ import { firebaseApp } from '@/components/commons/libraries/firebase';
 import DeleteModal from '@/components/ui/deleteModal';
 import Alert from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { LinkBox } from '@/components/ui/link';
 import { IBookClubBoard } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { useAlert } from '@/hooks/useAlert';
@@ -91,13 +92,13 @@ export default function BookClubBoardDetail({ id }: IBookClubBoardDetailProps) {
 
                 {/* 하단 버튼 영역 */}
                 <div className="flex items-center justify-end gap-3 mt-5">
-                    <Button onClick={() => router.push(`/bookClubDetail/${board?.clubId}`)}>나의 책갈피 모임 가기</Button>
+                    <LinkBox href={`/bookClubDetail/${board?.clubId}`}>나의 책갈피 모임 가기</LinkBox>
 
                     {!isLoading && isMine && (
                         <div className="flex items-center justify-end gap-3 ">
-                            <Button onClick={() => router.push(`/bookClubBoardDetail/${id}/edit`)} variant="submit">
+                            <LinkBox variant="submit" href={`/bookClubBoardDetail/${id}/edit}`}>
                                 수정
-                            </Button>
+                            </LinkBox>
                             <Button onClick={() => setIsOpen(true)} variant="close">
                                 삭제
                             </Button>

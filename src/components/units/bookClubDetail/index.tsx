@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import { getFirestore, doc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 
-import { Button } from '@/components/ui/button';
 import { IBookClub, IBookClubBoard } from '@/types';
+import { LinkBox } from '@/components/ui/link';
 
 export default function BookClubDetail({ id }: { id: string }) {
     const router = useRouter();
@@ -92,10 +92,11 @@ export default function BookClubDetail({ id }: { id: string }) {
 
             {/* 버튼 */}
             <div className="flex items-center justify-end gap-5 mt-5 ">
-                <Button variant="submit" onClick={() => router.push(`/bookClubWrite?clubId=${id}`)}>
+                <LinkBox variant="submit" href={`/bookClubWrite?clubId=${id}`}>
                     글쓰기
-                </Button>
-                <Button onClick={() => router.push(`/bookClub`)}>책갈피 모임 가기</Button>
+                </LinkBox>
+
+                <LinkBox href={`/bookClub`}>책갈피 모임 가기</LinkBox>
             </div>
         </div>
     );

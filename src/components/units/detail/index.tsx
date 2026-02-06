@@ -12,6 +12,7 @@ import DeleteModal from '@/components/ui/deleteModal';
 import Alert from '@/components/ui/alert';
 import HeartRating from '@/components/ui/rating';
 import { BookItem02 } from '@/components/ui/bookItem02';
+import { LinkBox } from '@/components/ui/link';
 
 export default function DetailPage({ isbn }: { isbn: string }) {
     const { showAlert, alertValue, triggerAlert } = useAlert();
@@ -112,7 +113,8 @@ export default function DetailPage({ isbn }: { isbn: string }) {
 
             {/* 하단 버튼 */}
             <div className="flex justify-end items-center gap-3">
-                <Button onClick={() => router.push('/myBookPath')}>나의 책갈피 가기</Button>
+                <LinkBox href={`/myBookPath`}>나의 책갈피 가기</LinkBox>
+
                 <Button onClick={handleEdit} variant="submit" disabled={loading}>
                     수정
                 </Button>

@@ -9,12 +9,12 @@ import { IBookClub } from '@/types';
 import { firebaseApp } from '@/components/commons/libraries/firebase';
 import { Button } from '@/components/ui/button';
 import Alert from '@/components/ui/alert';
+import { LinkBox } from '@/components/ui/link';
 
 import { useAlert } from '@/hooks/useAlert';
 import { useAuth } from '@/hooks/useAuth';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
 
 export default function MyBookClub() {
     const { uid } = useAuth();
@@ -121,9 +121,7 @@ export default function MyBookClub() {
                         <p>{club.clubName}</p>
 
                         <div className="flex gap-2">
-                            <Link className="inline-flex items-center justify-center h-9 px-4 py-2  whitespace-nowrap rounded-md text-sm shadow-[2px_2px_6px_rgba(0,0,0,0.1)] cursor-pointer bg-[#faf8da]" href={`/bookClubDetail/${club.id}`}>
-                                모임 가기
-                            </Link>
+                            <LinkBox href={`/bookClubDetail/${club.id}`}>모임 가기</LinkBox>
                             {/* <Button onClick={() => router.push(`/bookClubDetail/${club.id}`)}>모임 가기</Button> */}
                             <Button
                                 onClick={() => {
