@@ -12,7 +12,7 @@ export function useBookData(initialKeyword = '한국소설') {
 
     const cache = useRef<{ [key: string]: { [startIndex: number]: IBookItems[] } }>({});
 
-    // 1. useCallback을 사용하여 함수가 새로 생성되는 것을 방지
+    // useCallback을 사용하여 함수가 새로 생성되는 것을 방지
     const fetchBooks = useCallback(async (searchKeyword: string, pageNumber: number) => {
         if (!searchKeyword) return;
 
@@ -45,7 +45,7 @@ export function useBookData(initialKeyword = '한국소설') {
         }
     }, []); // 의존성 배열을 비워 처음에 한 번만 생성되게 함
 
-    // 2. 검색어 변경 시 페이지 1로 초기화 및 디바운스 로직
+    //  검색어 변경 시 페이지 1로 초기화 및 디바운스 로직
     useEffect(() => {
         const timer = setTimeout(() => {
             fetchBooks(keyword, page);
