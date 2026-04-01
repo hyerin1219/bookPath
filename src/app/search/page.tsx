@@ -1,5 +1,3 @@
-'use client';
-
 import Search from '@/components/units/search';
 
 export default function SearchPage() {
