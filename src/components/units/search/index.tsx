@@ -8,6 +8,8 @@ import { BookItem } from '@/components/ui/bookItem';
 import Modal from '@/components/ui/modal';
 import SearchBox from '@/components/ui/searchBox';
 import Pagination from '@/components/ui/pagination';
+import { useAlert } from '@/hooks/useAlert';
+import Alert from '@/components/ui/alert';
 
 export default function Search() {
     const searchParams = useSearchParams();
@@ -16,6 +18,8 @@ export default function Search() {
 
     const { bookData, loading, keyword, setKeyword, page, setPage, totalData } = useBookData(initialKeyword);
     const [selectedBook, setSelectedBook] = useState<IBookItems | null>(null);
+
+    const { showAlert, alertValue, triggerAlert } = useAlert();
 
     useEffect(() => {
         if (initialKeyword) {
@@ -27,6 +31,11 @@ export default function Search() {
     // 검색 로직
     const handleSearch = () => {
         const trimmed = input.trim();
+        if (!initialKeyword) {
+            triggerAlert('검색어를 입력하세요.');
+            return;
+        }
+
         if (!trimmed || trimmed === keyword) return;
 
         setPage(1); // 새 검색어라면 페이지부터 1로 초기화
@@ -68,6 +77,7 @@ export default function Search() {
             {totalPages > 1 && <Pagination onPrev={handlePrev} onNext={handleNext} totalPages={totalPages} page={page} />}
 
             <Modal selectedBook={selectedBook} setSelectedBook={setSelectedBook} />
+            {showAlert && <Alert alertValue={alertValue} />}
         </div>
     );
 }
